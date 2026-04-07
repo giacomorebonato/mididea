@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-react-dom",
+  "version": "19.2.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/react-dom@19.2.0",
+  "summary": "React package for working with the DOM, providing rendering capabilities for both client-side and server-side environments."
+}

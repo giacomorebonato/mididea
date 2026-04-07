@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-playwright--test",
+  "version": "1.55.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/@playwright/test@1.55.0",
+  "summary": "A comprehensive end-to-end testing framework for modern web applications that enables automated testing across Chromium, Firefox, and WebKit browsers with a single API."
+}

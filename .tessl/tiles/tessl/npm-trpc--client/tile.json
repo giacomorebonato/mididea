@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-trpc--client",
+  "version": "11.5.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/@trpc/client@11.5.0",
+  "summary": "A TypeScript-first client library for tRPC that enables end-to-end type-safe communication between client and server applications."
+}

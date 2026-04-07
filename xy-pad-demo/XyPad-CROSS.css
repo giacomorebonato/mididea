@@ -1,0 +1,140 @@
+/* XyPad Styles - Cross-Expansion Design */
+
+.xy-pad {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d1111 100%);
+  border-radius: 12px;
+  cursor: pointer;
+  touch-action: none;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.xy-pad--selected {
+  background: linear-gradient(135deg, #0d6319 0%, #0a3d1a 100%);
+}
+
+/* Note Cross Shape - "+" Expansion Metaphor */
+.note-cross {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: note-pop 0.2s ease-out;
+}
+
+@keyframes note-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Center circle = Pitch indicator */
+.note-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: width 0.15s ease, height 0.15s ease, background 0.15s ease;
+}
+
+/* Arms - Vertical (Duration) and Horizontal (Velocity) */
+.note-arm {
+  position: absolute;
+  background: inherit;
+  transition: width 0.15s ease, height 0.15s ease;
+}
+
+/* Vertical arms = Duration (expand up/down) */
+.note-arm--vertical {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 2px;
+  background: linear-gradient(180deg, currentColor 0%, currentColor 100%);
+}
+
+/* Horizontal arms = Velocity (expand left/right) */
+.note-arm--horizontal {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 2px;
+  background: linear-gradient(90deg, currentColor 0%, currentColor 100%);
+}
+
+/* Tap prompt */
+.tap-prompt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.step-hint {
+  margin-top: 60px;
+  font-size: 10px;
+  color: #444;
+  pointer-events: none;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .xy-pad {
+    -webkit-touch-callout: none;
+  }
+
+  .note-cross {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .note-center {
+    min-width: 30px; /* Reduced for mobile */
+    min-height: 30px;
+  }
+}
+
+/* Dark mode only */
+body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Selection state visual feedback */
+.xy-pad--selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid #0d6319;
+  border-radius: 12px;
+  pointer-events: none;
+  animation: selection-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes selection-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}

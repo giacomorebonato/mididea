@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-types--react",
+  "version": "19.1.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/@types/react@19.1.1",
+  "summary": "TypeScript definitions for React, the popular JavaScript library for building user interfaces"
+}

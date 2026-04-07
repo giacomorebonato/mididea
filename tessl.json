@@ -1,0 +1,69 @@
+{
+  "name": "my-project",
+  "mode": "vendored",
+  "dependencies": {
+    "tessl/npm-react": {
+      "version": "19.2.0"
+    },
+    "brianlovin/claude-config": {
+      "version": "1a9819ebf3fee811150fc76cbe177ea4e5f747ff",
+      "source": "https://github.com/brianlovin/claude-config",
+      "include": {
+        "skills": [
+          "bun"
+        ]
+      }
+    },
+    "tessl/npm-biomejs--biome": {
+      "version": "2.3.0"
+    },
+    "tessl/npm-libsql--client": {
+      "version": "0.15.0"
+    },
+    "tessl/npm-playwright--test": {
+      "version": "1.55.0"
+    },
+    "tessl/npm-radix-ui--react-slot": {
+      "version": "1.2.0"
+    },
+    "tessl/npm-tanstack--react-query": {
+      "version": "5.87.0"
+    },
+    "tessl/npm-tanstack--react-router": {
+      "version": "1.132.0"
+    },
+    "tessl/npm-trpc--client": {
+      "version": "11.5.0"
+    },
+    "tessl/npm-trpc--react-query": {
+      "version": "11.5.0"
+    },
+    "tessl/npm-types--react": {
+      "version": "19.1.0"
+    },
+    "tessl/npm-clsx": {
+      "version": "2.1.0"
+    },
+    "tessl/npm-lucide-react": {
+      "version": "0.542.0"
+    },
+    "tessl/npm-prisma": {
+      "version": "6.15.0"
+    },
+    "tessl/npm-react-dom": {
+      "version": "19.2.0"
+    },
+    "tessl/npm-tailwind-merge": {
+      "version": "2.6.0"
+    },
+    "tessl/npm-tailwindcss": {
+      "version": "4.1.1"
+    },
+    "tessl/npm-tone": {
+      "version": "15.3.0"
+    },
+    "tessl/npm-zod": {
+      "version": "4.3.0"
+    }
+  }
+}

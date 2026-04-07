@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-tone",
+  "version": "15.3.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/tone@15.3.0",
+  "summary": "A Web Audio framework for creating interactive music in the browser"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-radix-ui--react-slot",
+  "version": "1.2.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/@radix-ui/react-slot@1.2.3",
+  "summary": "React component for merging props and composing elements with customizable rendering behavior through slot pattern implementation"
+}

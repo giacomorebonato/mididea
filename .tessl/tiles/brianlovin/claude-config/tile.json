@@ -1,0 +1,32 @@
+{
+  "name": "brianlovin/claude-config",
+  "version": "1a9819ebf3fee811150fc76cbe177ea4e5f747ff",
+  "summary": "Auto-generated tile from GitHub (18 skills)",
+  "private": true,
+  "skills": {
+    "bun": {
+      "path": "skills/bun/SKILL.md"
+    }
+  },
+  "excludes": {
+    "skills": [
+      "agent-browser",
+      "chrome-webstore-release-blueprint",
+      "deslop",
+      "favicon",
+      "find-skills",
+      "fix-sentry-issues",
+      "grill-me",
+      "knip",
+      "playwriter",
+      "rams",
+      "react-doctor",
+      "reclaude",
+      "sentry",
+      "simplify",
+      "skill-creator",
+      "tdd",
+      "workflow"
+    ]
+  }
+}

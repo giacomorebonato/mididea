@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-trpc--react-query",
+  "version": "11.5.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/@trpc/react-query@11.5.0",
+  "summary": "A tRPC wrapper around react-query that provides end-to-end typesafe APIs with React Query integration"
+}

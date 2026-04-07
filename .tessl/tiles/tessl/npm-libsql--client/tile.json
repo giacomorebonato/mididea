@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-libsql--client",
+  "version": "0.15.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/@libsql/client@0.15.14",
+  "summary": "libSQL driver for TypeScript and JavaScript with support for local files, remote databases, and embedded replicas"
+}

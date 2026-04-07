@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-prisma",
+  "version": "6.15.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/prisma@6.15.0",
+  "summary": "Prisma is a next-generation ORM that provides a comprehensive database toolkit including type-safe query builder, declarative migrations, and GUI database management."
+}

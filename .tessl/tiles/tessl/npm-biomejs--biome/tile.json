@@ -1,0 +1,8 @@
+{
+  "name": "tessl/npm-biomejs--biome",
+  "version": "2.3.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/%40biomejs/biome@2.3.8",
+  "summary": "Biome is a toolchain for the web: formatter, linter and more",
+  "private": false
+}

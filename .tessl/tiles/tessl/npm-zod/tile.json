@@ -1,0 +1,8 @@
+{
+  "name": "tessl/npm-zod",
+  "version": "4.3.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/zod@4.3.5",
+  "summary": "TypeScript-first schema validation library with static type inference. Define schemas, validate data, and get type safety with zero dependencies.",
+  "private": false
+}

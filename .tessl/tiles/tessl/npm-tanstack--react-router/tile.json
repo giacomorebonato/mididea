@@ -1,0 +1,7 @@
+{
+  "name": "tessl/npm-tanstack--react-router",
+  "version": "1.132.0",
+  "docs": "docs/index.md",
+  "describes": "pkg:npm/@tanstack/react-router@1.132.26",
+  "summary": "Modern and scalable routing for React applications with built-in data fetching, caching, and state management capabilities"
+}
