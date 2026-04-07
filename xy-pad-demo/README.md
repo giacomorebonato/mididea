@@ -83,7 +83,7 @@ npm run dev
    - Left = shorter (thinner outer ring)
    - **Hear duration changes in real-time!** 🎹
 
-4. **Remove Note:** Tap chip again (or add double-tap for cleaner UX)
+4. **Remove Note:** Double-tap chip to remove (validated: prevents accidental deletion during drag)
 
 ---
 

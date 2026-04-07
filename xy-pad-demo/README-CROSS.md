@@ -75,7 +75,7 @@ Velocity (Horizontal) → ←━━━━━━━→
    - Line width decreases: 127px → 63px → 20px
    - Velocity decreases: 127 → 64 → 0
 
-6. **Click Again** → Remove note (toggle off)
+6. **Double-click/tap** → Remove note (double-tap prevents accidental deletion during drag)
 
 ---
 

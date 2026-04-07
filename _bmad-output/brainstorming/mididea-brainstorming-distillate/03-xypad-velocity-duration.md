@@ -72,7 +72,7 @@ This section covers XyPad velocity/duration interaction design brainstorm detail
 
 - [I#1] Elastic Band Gesture: same as V#12
 - [I#2] Press+Hold All Params: same as V#21
-- [I#3] Single Finger Two-Mode: tap=toggle, drag=adjust velocity/duration; long-press=edit mode
+- [I#3] Single Finger Two-Mode: tap=create, double-tap=remove (validated: prevents accidental deletion during drag); drag=adjust velocity/duration; long-press=edit mode
 - [I#4] Hear First, Adjust Second: tap=plays immediately, adjust while sustaining; sound-driven learning
 - [I#5] Multi-Touch Velocity: same as V#13
 - [I#6] Two-Mode XY Pad: toggle Note Mode (X=pitch, Y=filter) vs Velocity/Duration Mode

@@ -7,12 +7,14 @@ import { SequencerControls } from './sequencer-controls'
 import { XyPad } from './xy-pad'
 import { exportMidi } from './midi-export'
 import { SaveCompositionDialog } from '../components/save-composition-dialog'
+import { useOrientation } from './orientation-context'
+import { LandscapePrompt } from './landscape-prompt'
 
 export function SequencerPage() {
   const [state, dispatch] = useSequencer()
   const engineRef = useRef<AudioEngine | null>(null)
+  const { isMobileLandscape, isMobilePortrait } = useOrientation()
 
-  // Initialize audio engine
   useEffect(() => {
     const engine = new AudioEngine()
     engine.setOnStep(() => {
@@ -22,27 +24,22 @@ export function SequencerPage() {
     return () => engine.dispose()
   }, [dispatch])
 
-  // Sync drum grid to engine
   useEffect(() => {
     engineRef.current?.setGrid(state.drumGrid)
   }, [state.drumGrid])
 
-  // Sync synth tracks to engine
   useEffect(() => {
     engineRef.current?.setSynthTracks(state.synthTracks)
   }, [state.synthTracks])
 
-  // Sync BPM to engine
   useEffect(() => {
     engineRef.current?.setTempo(state.bpm)
   }, [state.bpm])
 
-  // Sync swing to engine
   useEffect(() => {
     engineRef.current?.setSwing(state.swing)
   }, [state.swing])
 
-  // Handle play/stop
   useEffect(() => {
     if (state.isPlaying) {
       engineRef.current?.play()
@@ -51,7 +48,6 @@ export function SequencerPage() {
     }
   }, [state.isPlaying])
 
-  // Spacebar shortcut
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.code === 'Space' && e.target === document.body) {
@@ -70,10 +66,58 @@ export function SequencerPage() {
     exportMidi(state.drumGrid, state.synthTracks, state.bpm, state.stepCount)
   }, [state.drumGrid, state.synthTracks, state.bpm, state.stepCount])
 
-  // Find XY pad context
   const xyPadTrack = state.activeXyPad
     ? state.synthTracks.find((t) => t.id === state.activeXyPad!.trackId)
     : null
+
+  if (isMobilePortrait) {
+    return (
+      <>
+        <LandscapePrompt />
+        {state.activeXyPad && xyPadTrack && (
+          <XyPad
+            trackId={state.activeXyPad.trackId}
+            step={state.activeXyPad.step}
+            scaleIndex={state.scaleIndex}
+            rootNote={state.rootNote}
+            presetId={xyPadTrack.presetId}
+            existingNotes={xyPadTrack.steps[state.activeXyPad.step] ?? []}
+            dispatch={dispatch}
+          />
+        )}
+      </>
+    )
+  }
+
+  if (isMobileLandscape) {
+    return (
+      <div className="flex flex-col h-full gap-1">
+        <SequencerControls
+          state={state}
+          dispatch={dispatch}
+          onExport={handleExport}
+          compact
+        >
+          <SaveCompositionDialog state={state} />
+        </SequencerControls>
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <SequencerGrid state={state} dispatch={dispatch} />
+        </div>
+
+        {state.activeXyPad && xyPadTrack && (
+          <XyPad
+            trackId={state.activeXyPad.trackId}
+            step={state.activeXyPad.step}
+            scaleIndex={state.scaleIndex}
+            rootNote={state.rootNote}
+            presetId={xyPadTrack.presetId}
+            existingNotes={xyPadTrack.steps[state.activeXyPad.step] ?? []}
+            dispatch={dispatch}
+          />
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-3 sm:space-y-6">
@@ -84,14 +128,17 @@ export function SequencerPage() {
           </p>
         </CardHeader>
         <CardContent className="space-y-4 sm:space-y-6 px-3 sm:px-6">
-          <SequencerControls state={state} dispatch={dispatch} onExport={handleExport}>
+          <SequencerControls
+            state={state}
+            dispatch={dispatch}
+            onExport={handleExport}
+          >
             <SaveCompositionDialog state={state} />
           </SequencerControls>
           <SequencerGrid state={state} dispatch={dispatch} />
         </CardContent>
       </Card>
 
-      {/* XY Pad overlay */}
       {state.activeXyPad && xyPadTrack && (
         <XyPad
           trackId={state.activeXyPad.trackId}

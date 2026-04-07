@@ -39,10 +39,10 @@ function getBarGeometry(
   const colLeft = (noteIdx / totalNotes) * containerWidth
   const colWidth = containerWidth / totalNotes
   const barWidthPct = 30 + velocity * 60
-  const barLeftOffset = colLeft + (colWidth * (100 - barWidthPct) / 200)
-  const barWidth = colWidth * barWidthPct / 100
+  const barLeftOffset = colLeft + (colWidth * (100 - barWidthPct)) / 200
+  const barWidth = (colWidth * barWidthPct) / 100
   const barHeightPct = Math.min(80, 8 + (duration / 16) * 72)
-  const barHeight = containerHeight * barHeightPct / 100
+  const barHeight = (containerHeight * barHeightPct) / 100
   const barTop = containerHeight - barHeight
   return { barLeftOffset, barWidth, barTop }
 }
@@ -59,6 +59,7 @@ export function XyPad({
   const canvasRef = useRef<HTMLDivElement>(null)
   const synthRef = useRef<Tone.PolySynth | null>(null)
   const previewTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastTapRef = useRef<{ time: number; noteIndex: number } | null>(null)
   const [dragState, setDragState] = useState<DragState | null>(null)
   const [hoveredNote, setHoveredNote] = useState<number | null>(null)
 
@@ -87,16 +88,19 @@ export function XyPad({
     }
   }, [])
 
-  const previewNote = useCallback((pitch: string, velocity: number, durationMs: number) => {
-    if (!synthRef.current) return
-    synthRef.current.releaseAll()
-    synthRef.current.triggerAttack(pitch, undefined, velocity)
-    if (previewTimerRef.current) clearTimeout(previewTimerRef.current)
-    previewTimerRef.current = setTimeout(() => {
-      synthRef.current?.releaseAll()
-      previewTimerRef.current = null
-    }, durationMs)
-  }, [])
+  const previewNote = useCallback(
+    (pitch: string, velocity: number, durationMs: number) => {
+      if (!synthRef.current) return
+      synthRef.current.releaseAll()
+      synthRef.current.triggerAttack(pitch, undefined, velocity)
+      if (previewTimerRef.current) clearTimeout(previewTimerRef.current)
+      previewTimerRef.current = setTimeout(() => {
+        synthRef.current?.releaseAll()
+        previewTimerRef.current = null
+      }, durationMs)
+    },
+    [],
+  )
 
   const pointerToPitch = useCallback(
     (e: React.PointerEvent): string | null => {
@@ -122,11 +126,20 @@ export function XyPad({
 
         const velocity = note.velocity ?? 0.5
         const duration = note.duration ?? 1
-        const geo = getBarGeometry(noteIdx, scaleNotes.length, velocity, duration, rect.width, rect.height)
+        const geo = getBarGeometry(
+          noteIdx,
+          scaleNotes.length,
+          velocity,
+          duration,
+          rect.width,
+          rect.height,
+        )
 
         if (
-          clickX >= geo.barLeftOffset && clickX <= geo.barLeftOffset + geo.barWidth &&
-          clickY >= geo.barTop && clickY <= rect.height
+          clickX >= geo.barLeftOffset &&
+          clickX <= geo.barLeftOffset + geo.barWidth &&
+          clickY >= geo.barTop &&
+          clickY <= rect.height
         ) {
           return i
         }
@@ -165,7 +178,12 @@ export function XyPad({
         const existingIdx = existingNotes.findIndex((n) => n.pitch === pitch)
 
         if (existingIdx !== -1) {
-          dispatch({ type: 'REMOVE_SYNTH_NOTE', trackId, step, noteIndex: existingIdx })
+          dispatch({
+            type: 'REMOVE_SYNTH_NOTE',
+            trackId,
+            step,
+            noteIndex: existingIdx,
+          })
         } else {
           dispatch({
             type: 'ADD_SYNTH_NOTE',
@@ -177,7 +195,15 @@ export function XyPad({
         }
       }
     },
-    [hitTestNote, pointerToPitch, dispatch, trackId, step, existingNotes, previewNote],
+    [
+      hitTestNote,
+      pointerToPitch,
+      dispatch,
+      trackId,
+      step,
+      existingNotes,
+      previewNote,
+    ],
   )
 
   const handlePointerMove = useCallback(
@@ -193,21 +219,34 @@ export function XyPad({
       if (!dragState.hasDragged && movedDistance < DRAG_THRESHOLD) return
 
       const durationChange = -deltaY / 50
-      const newDuration = Math.max(1, Math.min(16, Math.round(dragState.initialDuration + durationChange)))
+      const newDuration = Math.max(
+        1,
+        Math.min(16, Math.round(dragState.initialDuration + durationChange)),
+      )
 
       const velocityChange = deltaX / 200
-      const newVelocity = Math.max(0.1, Math.min(1, dragState.initialVelocity + velocityChange))
+      const newVelocity = Math.max(
+        0.1,
+        Math.min(1, dragState.initialVelocity + velocityChange),
+      )
 
-      if (newDuration !== dragState.currentDuration || newVelocity !== dragState.currentVelocity) {
+      if (
+        newDuration !== dragState.currentDuration ||
+        newVelocity !== dragState.currentVelocity
+      ) {
         previewNote(dragState.pitch, newVelocity, 150)
       }
 
-      setDragState(prev => prev ? {
-        ...prev,
-        currentDuration: newDuration,
-        currentVelocity: newVelocity,
-        hasDragged: true,
-      } : null)
+      setDragState((prev) =>
+        prev
+          ? {
+              ...prev,
+              currentDuration: newDuration,
+              currentVelocity: newVelocity,
+              hasDragged: true,
+            }
+          : null,
+      )
     },
     [dragState, previewNote],
   )
@@ -240,12 +279,24 @@ export function XyPad({
           duration: dragState.currentDuration,
         })
       } else {
-        dispatch({
-          type: 'REMOVE_SYNTH_NOTE',
-          trackId,
-          step,
-          noteIndex: dragState.noteIndex,
-        })
+        const now = Date.now()
+        const last = lastTapRef.current
+
+        if (
+          last &&
+          last.noteIndex === dragState.noteIndex &&
+          now - last.time < 300
+        ) {
+          dispatch({
+            type: 'REMOVE_SYNTH_NOTE',
+            trackId,
+            step,
+            noteIndex: dragState.noteIndex,
+          })
+          lastTapRef.current = null
+        } else {
+          lastTapRef.current = { time: now, noteIndex: dragState.noteIndex }
+        }
       }
 
       setDragState(null)
@@ -268,12 +319,18 @@ export function XyPad({
 
   const renderNotes = existingNotes.map((note, i) => {
     if (dragState?.hasDragged && dragState.noteIndex === i) {
-      return { ...note, velocity: dragState.currentVelocity, duration: dragState.currentDuration }
+      return {
+        ...note,
+        velocity: dragState.currentVelocity,
+        duration: dragState.currentDuration,
+      }
     }
     return note
   })
 
-  const invisibleNotes = existingNotes.filter((n) => scaleNotes.indexOf(n.pitch) === -1)
+  const invisibleNotes = existingNotes.filter(
+    (n) => scaleNotes.indexOf(n.pitch) === -1,
+  )
 
   const noteZones = scaleNotes.map((note, i) => {
     const left = (i / scaleNotes.length) * 100
@@ -309,14 +366,19 @@ export function XyPad({
       </div>
 
       {/* Instructions */}
-      <div className="px-3 sm:px-4 pb-2 text-white/50 text-xs text-center" role="note">
-        Tap to add a bar · Tap bar to remove · Drag bar ↑↓ for duration · Drag bar ←→ for velocity
+      <div
+        className="px-3 sm:px-4 pb-2 text-white/50 text-xs text-center"
+        role="note"
+      >
+        Tap to add · Double-tap bar to remove · Drag bar ↑↓ duration · Drag bar
+        ←→ velocity
       </div>
 
       {/* Invisible notes warning */}
       {invisibleNotes.length > 0 && (
         <div className="px-3 sm:px-4 pb-2 text-amber-400/80 text-xs text-center">
-          {invisibleNotes.length} note{invisibleNotes.length !== 1 ? 's' : ''} hidden (pitch outside {scale.name})
+          {invisibleNotes.length} note{invisibleNotes.length !== 1 ? 's' : ''}{' '}
+          hidden (pitch outside {scale.name})
         </div>
       )}
 
@@ -325,7 +387,9 @@ export function XyPad({
         <div
           ref={canvasRef}
           className="relative w-full h-full rounded-xl overflow-hidden cursor-crosshair select-none touch-none"
-          style={{ background: 'linear-gradient(to top, #1a1a2e, #16213e, #0f3460)' }}
+          style={{
+            background: 'linear-gradient(to top, #1a1a2e, #16213e, #0f3460)',
+          }}
           onPointerDown={handlePointerDown}
           onPointerMove={(e) => {
             if (!dragState) {
@@ -352,9 +416,15 @@ export function XyPad({
           ))}
 
           {/* Axis labels */}
-          <div className="absolute left-2 top-2 text-white/30 text-xs">Long ↑</div>
-          <div className="absolute left-2 bottom-2 text-white/30 text-xs">Short ↓</div>
-          <div className="absolute right-2 bottom-2 text-white/30 text-xs">Quiet ← Loud →</div>
+          <div className="absolute left-2 top-2 text-white/30 text-xs">
+            Long ↑
+          </div>
+          <div className="absolute left-2 bottom-2 text-white/30 text-xs">
+            Short ↓
+          </div>
+          <div className="absolute right-2 bottom-2 text-white/30 text-xs">
+            Quiet ← Loud →
+          </div>
 
           {/* Note bars */}
           {renderNotes.map((note, i) => {
@@ -401,8 +471,14 @@ export function XyPad({
                     backgroundColor: barBg,
                     border: `2px solid ${isDragging ? '#fff' : isHovered ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.5)'}`,
                     borderTopWidth: '3px',
-                    borderTopColor: isDragging ? '#fff' : 'rgba(255,255,255,0.8)',
-                    boxShadow: isDragging ? '0 0 12px rgba(255,255,255,0.3)' : isHovered ? '0 0 6px rgba(255,255,255,0.15)' : 'none',
+                    borderTopColor: isDragging
+                      ? '#fff'
+                      : 'rgba(255,255,255,0.8)',
+                    boxShadow: isDragging
+                      ? '0 0 12px rgba(255,255,255,0.3)'
+                      : isHovered
+                        ? '0 0 6px rgba(255,255,255,0.15)'
+                        : 'none',
                     transition: isDragging ? 'none' : 'all 0.15s ease',
                   }}
                 >

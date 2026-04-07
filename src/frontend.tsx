@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import { getTRPCClientOptions, queryClient } from './client/query-client'
 import { router } from './client/router'
 import { trpc } from './client/trpc'
+import { OrientationProvider } from './client/sequencer/orientation-context'
 import './index.css'
 
 const trpcClient = trpc.createClient(getTRPCClientOptions())
@@ -12,11 +13,13 @@ const trpcClient = trpc.createClient(getTRPCClientOptions())
 function App() {
   return (
     <StrictMode>
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </trpc.Provider>
+      <OrientationProvider>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </trpc.Provider>
+      </OrientationProvider>
     </StrictMode>
   )
 }

@@ -4,7 +4,7 @@ This section covers core product interaction, visual design, sound design, music
 
 - XY Pad Note Selector: tap step → full-screen XY pad; X=pitch (scale-locked, snaps to nearest scale degree), Y=filter cutoff; drag→hear in real-time via Tone.js→release to confirm; inspired by Kaossilator
 - Validated axis mapping (post-iteration): Y axis = duration, X expansion = velocity per note; supersedes original pitch×filter for velocity/duration layer
-- Stacked Chips: each step shows assigned notes as colored chips stacked vertically (higher pitch=higher position); tap chip to remove, "+" for XY pad; visual = mini melodic contour
+- Stacked Chips: each step shows assigned notes as colored chips stacked vertically (higher pitch=higher position); double-tap chip to remove (validated: prevents accidental deletion during drag), "+" for XY pad; visual = mini melodic contour
 - Try-Before-You-Commit: hear note as you drag on XY pad
 - Scale Strip (alt to XY): horizontal strip with wide thumb-friendly scale degree zones; tap→hear→add
 - Chord Presets: quick-add for root/power/triad/7th; custom voicings via XY pad
