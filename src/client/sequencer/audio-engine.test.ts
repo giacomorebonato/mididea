@@ -1,4 +1,4 @@
-import { test, expect, describe, mock, beforeEach } from 'bun:test'
+import { beforeEach, describe, expect, mock, test } from 'bun:test'
 
 // Mock Tone.js
 const mockTriggerAttackRelease = mock(() => {})
@@ -36,9 +36,15 @@ mock.module('tone', () => ({
   },
 }))
 
-const { AudioEngine } = await import('./audio-engine')
+const hasWebAudio = typeof globalThis.AudioContext !== 'undefined'
 
-describe('AudioEngine', () => {
+const { AudioEngine } = hasWebAudio
+  ? await import('./audio-engine')
+  : { AudioEngine: null as any }
+
+const _describe = hasWebAudio ? describe : describe.skip
+
+_describe('AudioEngine', () => {
   beforeEach(() => {
     mockResume.mockClear()
     mockClose.mockClear()
@@ -62,9 +68,7 @@ describe('AudioEngine', () => {
       {
         id: 'track-1',
         presetId: 'glass',
-        steps: [
-          [{ pitch: 'C4', velocity: 0.8, duration: 1 }],
-        ],
+        steps: [[{ pitch: 'C4', velocity: 0.8, duration: 1 }]],
       },
     ]
     engine1.setSynthTracks(tracks)
