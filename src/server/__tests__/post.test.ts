@@ -47,15 +47,15 @@ describe('post router', () => {
     const caller = createCaller()
 
     const user = await caller.user.byId({ id: userId })
-    const postId = user.posts[0]!.id
+    const postId = user.posts[0]?.id
 
-    const published = await caller.post.publish({ id: postId })
+    const published = await caller.post.publish({ id: postId! })
     expect(published.published).toBe(true)
 
     const posts = await caller.post.list()
     expect(posts.length).toBe(1)
-    expect(posts[0]!.title).toBe('Test Post')
-    expect(posts[0]!.author.name).toBe('Author')
+    expect(posts[0]?.title).toBe('Test Post')
+    expect(posts[0]?.author.name).toBe('Author')
   })
 
   test('create rejects empty title', async () => {

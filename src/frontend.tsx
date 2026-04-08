@@ -4,8 +4,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { getTRPCClientOptions, queryClient } from './client/query-client'
 import { router } from './client/router'
-import { trpc } from './client/trpc'
 import { OrientationProvider } from './client/sequencer/orientation-context'
+import { trpc } from './client/trpc'
+import { ErrorBoundary } from './components/error-boundary'
 import './index.css'
 
 const trpcClient = trpc.createClient(getTRPCClientOptions())
@@ -13,18 +14,19 @@ const trpcClient = trpc.createClient(getTRPCClientOptions())
 function App() {
   return (
     <StrictMode>
-      <OrientationProvider>
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-          <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-          </QueryClientProvider>
-        </trpc.Provider>
-      </OrientationProvider>
+      <ErrorBoundary>
+        <OrientationProvider>
+          <trpc.Provider client={trpcClient} queryClient={queryClient}>
+            <QueryClientProvider client={queryClient}>
+              <RouterProvider router={router} />
+            </QueryClientProvider>
+          </trpc.Provider>
+        </OrientationProvider>
+      </ErrorBoundary>
     </StrictMode>
   )
 }
 
-// biome-ignore lint/style/noNonNullAssertion: root element always exists in index.html
 const elem = document.getElementById('root')!
 
 if (import.meta.hot) {
