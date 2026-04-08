@@ -16,9 +16,10 @@
     "lint": "bunx biome check .",
     "lint:fix": "bunx biome check --write .",
     "format": "bunx biome format --write .",
-    "test": "bun test src/ && bunx playwright test",
+    "test": "bun run --parallel test:unit test:e2e",
     "test:unit": "bun test src/",
-    "test:e2e": "bunx playwright test"
+    "test:e2e": "bunx playwright test",
+    "test:coverage": "bun test src/ --coverage"
   },
   "prisma": {
     "seed": "bun prisma/seed.ts"
