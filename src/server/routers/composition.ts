@@ -1,20 +1,30 @@
-import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import { publicProcedure, protectedProcedure, router } from '../trpc'
-
-const MAX_COMPOSITIONS_PER_USER = 5
+import { z } from 'zod'
+import {
+  COMPOSITION_LIST_LIMIT_DEFAULT,
+  COMPOSITION_LIST_LIMIT_MAX,
+  COMPOSITION_LIST_LIMIT_MIN,
+  MAX_COMPOSITIONS_PER_USER,
+} from '../config'
+import { protectedProcedure, publicProcedure, router } from '../trpc'
 
 export const compositionRouter = router({
   /** List all compositions (public) */
   list: publicProcedure
     .input(
-      z.object({
-        cursor: z.string().optional(),
-        limit: z.number().min(1).max(50).default(20),
-      }).optional(),
+      z
+        .object({
+          cursor: z.string().optional(),
+          limit: z
+            .number()
+            .min(COMPOSITION_LIST_LIMIT_MIN)
+            .max(COMPOSITION_LIST_LIMIT_MAX)
+            .default(COMPOSITION_LIST_LIMIT_DEFAULT),
+        })
+        .optional(),
     )
     .query(async ({ ctx, input }) => {
-      const limit = input?.limit ?? 20
+      const limit = input?.limit ?? COMPOSITION_LIST_LIMIT_DEFAULT
       const items = await ctx.prisma.composition.findMany({
         take: limit + 1,
         ...(input?.cursor ? { cursor: { id: input.cursor }, skip: 1 } : {}),

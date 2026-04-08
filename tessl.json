@@ -9,9 +9,7 @@
       "version": "1a9819ebf3fee811150fc76cbe177ea4e5f747ff",
       "source": "https://github.com/brianlovin/claude-config",
       "include": {
-        "skills": [
-          "bun"
-        ]
+        "skills": ["bun"]
       }
     },
     "tessl/npm-biomejs--biome": {

@@ -1,4 +1,4 @@
-import { test, expect, describe, mock, beforeEach } from 'bun:test'
+import { beforeEach, describe, expect, mock, test } from 'bun:test'
 
 // Mock Tone.js before importing SynthEngine
 const mockTriggerAttackRelease = mock(() => {})

@@ -1,7 +1,7 @@
 import MidiWriter from 'midi-writer-js'
-import type { DrumId, DrumGrid, SynthTrack } from './types'
-import { DRUM_IDS } from './types'
 import { noteToMidi } from './scales'
+import type { DrumGrid, DrumId, SynthTrack } from './types'
+import { DRUM_IDS } from './types'
 
 // General MIDI percussion map (channel 10)
 const GM_PERCUSSION: Record<DrumId, number> = {
@@ -63,7 +63,12 @@ export function exportMidi(
 
     // Map step duration to MIDI duration strings
     const DURATION_MAP: Record<number, string> = {
-      1: '16', 2: '8', 3: 'd8', 4: '4', 6: 'd4', 8: '2',
+      1: '16',
+      2: '8',
+      3: 'd8',
+      4: '4',
+      6: 'd4',
+      8: '2',
     }
 
     for (let step = 0; step < stepCount; step++) {
@@ -72,7 +77,8 @@ export function exportMidi(
       if (notes.length > 0) {
         const pitches = notes.map((n) => noteToMidi(n.pitch))
         // Map velocity (0-1) to MIDI velocity (40-127)
-        const avgVelocity = notes.reduce((sum, n) => sum + (n.velocity ?? 0.8), 0) / notes.length
+        const avgVelocity =
+          notes.reduce((sum, n) => sum + (n.velocity ?? 0.8), 0) / notes.length
         const velocity = Math.round(40 + avgVelocity * 87)
         // Use the max duration of the notes in this step
         const maxDur = Math.max(...notes.map((n) => n.duration ?? 1))

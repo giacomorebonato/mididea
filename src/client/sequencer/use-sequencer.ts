@@ -1,22 +1,24 @@
-import { useCallback, useEffect, useReducer, useRef } from 'react'
+import { useEffect, useReducer, useRef } from 'react'
 import {
-  type SequencerState,
-  type SequencerAction,
-  type DrumId,
-  DRUM_IDS,
+  createEmptyDrumGrid,
+  createEmptySynthTrack,
   DEFAULT_BPM,
   DEFAULT_STEP_COUNT,
   DEFAULT_SWING,
-  MIN_BPM,
   MAX_BPM,
   MAX_SWING,
-  createEmptyDrumGrid,
-  createEmptySynthTrack,
+  MIN_BPM,
+  type SequencerAction,
+  type SequencerState,
 } from './types'
 
 const STORAGE_KEY = 'mididea-sequencer-state'
 
-const TRANSIENT_KEYS: (keyof SequencerState)[] = ['isPlaying', 'currentStep', 'activeXyPad']
+const TRANSIENT_KEYS: (keyof SequencerState)[] = [
+  'isPlaying',
+  'currentStep',
+  'activeXyPad',
+]
 
 const initialState: SequencerState = {
   drumGrid: createEmptyDrumGrid(DEFAULT_STEP_COUNT),
@@ -31,7 +33,10 @@ const initialState: SequencerState = {
   activeXyPad: null,
 }
 
-function sequencerReducer(state: SequencerState, action: SequencerAction): SequencerState {
+export function sequencerReducer(
+  state: SequencerState,
+  action: SequencerAction,
+): SequencerState {
   switch (action.type) {
     case 'TOGGLE_STEP': {
       const row = [...state.drumGrid[action.drum]]
@@ -45,7 +50,9 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
           t.id === action.trackId
             ? {
                 ...t,
-                steps: t.steps.map((s, i) => (i === action.step ? [...s, action.note] : s)),
+                steps: t.steps.map((s, i) =>
+                  i === action.step ? [...s, action.note] : s,
+                ),
               }
             : t,
         ),
@@ -59,7 +66,9 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
             ? {
                 ...t,
                 steps: t.steps.map((s, i) =>
-                  i === action.step ? s.filter((_, ni) => ni !== action.noteIndex) : s,
+                  i === action.step
+                    ? s.filter((_, ni) => ni !== action.noteIndex)
+                    : s,
                 ),
               }
             : t,
@@ -71,7 +80,10 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
         ...state,
         synthTracks: state.synthTracks.map((t) =>
           t.id === action.trackId
-            ? { ...t, steps: t.steps.map((s, i) => (i === action.step ? [] : s)) }
+            ? {
+                ...t,
+                steps: t.steps.map((s, i) => (i === action.step ? [] : s)),
+              }
             : t,
         ),
       }
@@ -94,7 +106,9 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
                 steps: t.steps.map((s, i) =>
                   i === action.step
                     ? s.map((n, ni) =>
-                        ni === action.noteIndex ? { ...n, duration: action.duration } : n,
+                        ni === action.noteIndex
+                          ? { ...n, duration: action.duration }
+                          : n,
                       )
                     : s,
                 ),
@@ -114,7 +128,11 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
                   i === action.step
                     ? s.map((n, ni) =>
                         ni === action.noteIndex
-                          ? { ...n, pitch: action.pitch, velocity: action.velocity }
+                          ? {
+                              ...n,
+                              pitch: action.pitch,
+                              velocity: action.velocity,
+                            }
                           : n,
                       )
                     : s,
@@ -125,11 +143,18 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
       }
     }
     case 'OPEN_XY_PAD':
-      return { ...state, activeXyPad: { trackId: action.trackId, step: action.step } }
+      return {
+        ...state,
+        activeXyPad: { trackId: action.trackId, step: action.step },
+      }
     case 'CLOSE_XY_PAD':
       return { ...state, activeXyPad: null }
     case 'ADD_SYNTH_TRACK': {
-      const newTrack = createEmptySynthTrack(action.trackId, action.presetId, state.stepCount)
+      const newTrack = createEmptySynthTrack(
+        action.trackId,
+        action.presetId,
+        state.stepCount,
+      )
       return { ...state, synthTracks: [...state.synthTracks, newTrack] }
     }
     case 'REMOVE_SYNTH_TRACK':
@@ -137,7 +162,9 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
         ...state,
         synthTracks: state.synthTracks.filter((t) => t.id !== action.trackId),
         activeXyPad:
-          state.activeXyPad?.trackId === action.trackId ? null : state.activeXyPad,
+          state.activeXyPad?.trackId === action.trackId
+            ? null
+            : state.activeXyPad,
       }
     case 'SET_BPM':
       return { ...state, bpm: Math.max(MIN_BPM, Math.min(MAX_BPM, action.bpm)) }
@@ -152,12 +179,17 @@ function sequencerReducer(state: SequencerState, action: SequencerAction): Seque
     case 'STOP':
       return { ...state, isPlaying: false, currentStep: -1 }
     case 'ADVANCE_STEP':
-      return { ...state, currentStep: (state.currentStep + 1) % state.stepCount }
+      return {
+        ...state,
+        currentStep: (state.currentStep + 1) % state.stepCount,
+      }
     case 'CLEAR_ALL':
       return {
         ...state,
         drumGrid: createEmptyDrumGrid(state.stepCount),
-        synthTracks: state.synthTracks.map((t) => createEmptySynthTrack(t.id, t.presetId, state.stepCount)),
+        synthTracks: state.synthTracks.map((t) =>
+          createEmptySynthTrack(t.id, t.presetId, state.stepCount),
+        ),
         isPlaying: false,
         currentStep: -1,
       }
@@ -197,8 +229,15 @@ function persistState(state: SequencerState) {
   }
 }
 
-export function useSequencer(): [SequencerState, React.Dispatch<SequencerAction>] {
-  const [state, dispatch] = useReducer(sequencerReducer, undefined, loadPersistedState)
+export function useSequencer(): [
+  SequencerState,
+  React.Dispatch<SequencerAction>,
+] {
+  const [state, dispatch] = useReducer(
+    sequencerReducer,
+    undefined,
+    loadPersistedState,
+  )
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Persist on state changes (debounced, skip transient-only changes)
@@ -208,10 +247,19 @@ export function useSequencer(): [SequencerState, React.Dispatch<SequencerAction>
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }, [state.drumGrid, state.synthTracks, state.bpm, state.swing, state.scaleIndex, state.rootNote, state.stepCount])
+  }, [
+    state.drumGrid,
+    state.synthTracks,
+    state.bpm,
+    state.swing,
+    state.scaleIndex,
+    state.rootNote,
+    state.stepCount,
+    state,
+  ])
 
   return [state, dispatch]
 }
 
 /** Export for use in composition saving */
-export { STORAGE_KEY, TRANSIENT_KEYS, initialState }
+export { initialState, STORAGE_KEY, TRANSIENT_KEYS }

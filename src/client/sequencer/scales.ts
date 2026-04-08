@@ -47,7 +47,20 @@ export const SCALES: Scale[] = [
   },
 ]
 
-const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+const NOTE_NAMES = [
+  'C',
+  'C#',
+  'D',
+  'D#',
+  'E',
+  'F',
+  'F#',
+  'G',
+  'G#',
+  'A',
+  'A#',
+  'B',
+]
 
 export const ROOT_NOTES = NOTE_NAMES
 
@@ -65,7 +78,7 @@ export function noteToMidi(note: string): number {
   const name = match[1]!
   const octaveStr = match[2]!
   const noteIndex = NOTE_NAMES.indexOf(name)
-  const octave = Number.parseInt(octaveStr)
+  const octave = Number.parseInt(octaveStr, 10)
   return (octave + 1) * 12 + noteIndex
 }
 
@@ -86,7 +99,10 @@ export function getScaleNotes(
   for (let octave = octaveStart; octave <= octaveEnd; octave++) {
     for (const interval of scale.intervals) {
       const midiNote = (octave + 1) * 12 + rootIndex + interval
-      if (midiNote >= (octaveStart + 1) * 12 && midiNote <= (octaveEnd + 2) * 12) {
+      if (
+        midiNote >= (octaveStart + 1) * 12 &&
+        midiNote <= (octaveEnd + 2) * 12
+      ) {
         notes.push(midiToNote(midiNote))
       }
     }
@@ -97,10 +113,7 @@ export function getScaleNotes(
 /**
  * Map a normalized X position (0-1) to the nearest scale note.
  */
-export function xToScaleNote(
-  x: number,
-  scaleNotes: string[],
-): string {
+export function xToScaleNote(x: number, scaleNotes: string[]): string {
   const index = Math.round(x * (scaleNotes.length - 1))
   return scaleNotes[Math.max(0, Math.min(index, scaleNotes.length - 1))]!
 }

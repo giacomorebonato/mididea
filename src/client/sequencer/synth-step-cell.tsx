@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import type { SynthNote, SequencerAction } from './types'
 import { noteToColor } from './scales'
+import type { SequencerAction, SynthNote } from './types'
 
 interface SynthStepCellProps {
   trackId: string

@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useSequencer } from './use-sequencer'
-import { AudioEngine } from './audio-engine'
-import { SequencerGrid } from './sequencer-grid'
-import { SequencerControls } from './sequencer-controls'
-import { XyPad } from './xy-pad'
-import { exportMidi } from './midi-export'
 import { SaveCompositionDialog } from '../components/save-composition-dialog'
-import { useOrientation } from './orientation-context'
+import { AudioEngine } from './audio-engine'
 import { LandscapePrompt } from './landscape-prompt'
+import { exportMidi } from './midi-export'
+import { useOrientation } from './orientation-context'
+import { SequencerControls } from './sequencer-controls'
+import { SequencerGrid } from './sequencer-grid'
+import { useSequencer } from './use-sequencer'
+import { XyPad } from './xy-pad'
 
 export function SequencerPage() {
   const [state, dispatch] = useSequencer()
@@ -67,7 +67,7 @@ export function SequencerPage() {
   }, [state.drumGrid, state.synthTracks, state.bpm, state.stepCount])
 
   const xyPadTrack = state.activeXyPad
-    ? state.synthTracks.find((t) => t.id === state.activeXyPad!.trackId)
+    ? state.synthTracks.find((t) => t.id === state.activeXyPad?.trackId)
     : null
 
   if (isMobilePortrait) {
