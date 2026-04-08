@@ -1,8 +1,8 @@
 import * as Tone from 'tone'
-import type { DrumGrid, SynthTrack } from './types'
-import { DRUM_IDS } from './types'
 import { drumSounds } from './drum-sounds'
 import { SynthEngine } from './synth-engine'
+import type { DrumGrid, SynthTrack } from './types'
+import { DRUM_IDS } from './types'
 
 const SCHEDULE_AHEAD = 0.1 // seconds to schedule ahead
 const LOOKAHEAD = 25 // ms between scheduler checks
@@ -90,9 +90,12 @@ export class AudioEngine {
 
     // Notify UI of current step
     const stepForCallback = step
-    setTimeout(() => {
-      this.onStep?.(stepForCallback)
-    }, (time - this.audioContext!.currentTime) * 1000)
+    setTimeout(
+      () => {
+        this.onStep?.(stepForCallback)
+      },
+      (time - this.audioContext?.currentTime) * 1000,
+    )
   }
 
   private advanceStep() {
@@ -102,7 +105,9 @@ export class AudioEngine {
     // Apply swing to even-numbered steps (off-beats)
     // Swing shifts the off-beat notes later in time
     const isOffBeat = this.currentStep % 2 === 1
-    const swingAmount = isOffBeat ? (this.swing / 100) * secondsPer16th * 0.5 : 0
+    const swingAmount = isOffBeat
+      ? (this.swing / 100) * secondsPer16th * 0.5
+      : 0
 
     this.nextNoteTime += secondsPer16th + swingAmount
     this.currentStep = (this.currentStep + 1) % this.stepCount

@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ROOT_NOTES, SCALES } from './scales'
 import type { SequencerAction, SequencerState } from './types'
-import { MIN_BPM, MAX_BPM, MAX_SWING } from './types'
-import { SCALES, ROOT_NOTES } from './scales'
+import { MAX_BPM, MAX_SWING, MIN_BPM } from './types'
 
 interface SequencerControlsProps {
   state: SequencerState
@@ -21,7 +21,7 @@ export function SequencerControls({
   compact,
 }: SequencerControlsProps) {
   const { isPlaying, bpm, swing, scaleIndex, rootNote } = state
-  const scale = SCALES[scaleIndex]
+  const _scale = SCALES[scaleIndex]
 
   if (compact) {
     return (
@@ -48,7 +48,7 @@ export function SequencerControls({
             onChange={(e) =>
               dispatch({
                 type: 'SET_BPM',
-                bpm: Number.parseInt(e.target.value) || MIN_BPM,
+                bpm: Number.parseInt(e.target.value, 10) || MIN_BPM,
               })
             }
             className="w-12 h-7 text-xs px-1"
@@ -68,7 +68,7 @@ export function SequencerControls({
             onChange={(e) =>
               dispatch({
                 type: 'SET_SWING',
-                swing: Number.parseInt(e.target.value),
+                swing: Number.parseInt(e.target.value, 10),
               })
             }
             className="w-12 accent-white"
@@ -93,7 +93,7 @@ export function SequencerControls({
           onChange={(e) =>
             dispatch({
               type: 'SET_SCALE',
-              scaleIndex: Number.parseInt(e.target.value),
+              scaleIndex: Number.parseInt(e.target.value, 10),
             })
           }
           className="h-7 rounded-md border border-border bg-background px-1 text-xs"
@@ -152,7 +152,7 @@ export function SequencerControls({
           onChange={(e) =>
             dispatch({
               type: 'SET_BPM',
-              bpm: Number.parseInt(e.target.value) || MIN_BPM,
+              bpm: Number.parseInt(e.target.value, 10) || MIN_BPM,
             })
           }
           className="w-16 sm:w-20 h-9"
@@ -173,7 +173,7 @@ export function SequencerControls({
           onChange={(e) =>
             dispatch({
               type: 'SET_SWING',
-              swing: Number.parseInt(e.target.value),
+              swing: Number.parseInt(e.target.value, 10),
             })
           }
           className="w-16 sm:w-20 accent-white"
@@ -206,7 +206,7 @@ export function SequencerControls({
           onChange={(e) =>
             dispatch({
               type: 'SET_SCALE',
-              scaleIndex: Number.parseInt(e.target.value),
+              scaleIndex: Number.parseInt(e.target.value, 10),
             })
           }
           className="h-10 rounded-md border border-border bg-background px-2 text-sm max-w-[10rem]"

@@ -1,0 +1,7 @@
+export const MAX_COMPOSITIONS_PER_USER = Number(
+  process.env.MAX_COMPOSITIONS_PER_USER ?? 5,
+)
+
+export const COMPOSITION_LIST_LIMIT_MIN = 1
+export const COMPOSITION_LIST_LIMIT_MAX = 50
+export const COMPOSITION_LIST_LIMIT_DEFAULT = 20

@@ -23,7 +23,9 @@ export function AuthButton() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => authClient.signOut().then(() => window.location.reload())}
+          onClick={() =>
+            authClient.signOut().then(() => window.location.reload())
+          }
         >
           Sign out
         </Button>
@@ -59,7 +61,7 @@ export function AuthButton() {
       setPassword('')
       setName('')
       window.location.reload()
-    } catch (err) {
+    } catch (_err) {
       setError('Something went wrong')
     } finally {
       setLoading(false)
@@ -126,7 +128,11 @@ export function AuthButton() {
 
             <div className="flex flex-col gap-2">
               <Button type="submit" disabled={loading}>
-                {loading ? 'Loading...' : mode === 'login' ? 'Sign in' : 'Create account'}
+                {loading
+                  ? 'Loading...'
+                  : mode === 'login'
+                    ? 'Sign in'
+                    : 'Create account'}
               </Button>
               <Button
                 type="button"
@@ -137,7 +143,9 @@ export function AuthButton() {
                   setError('')
                 }}
               >
-                {mode === 'login' ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
+                {mode === 'login'
+                  ? "Don't have an account? Sign up"
+                  : 'Already have an account? Sign in'}
               </Button>
             </div>
           </form>

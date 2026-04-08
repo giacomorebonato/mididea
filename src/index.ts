@@ -8,6 +8,7 @@ import { appRouter } from './server/routers/_app'
 
 const server = serve({
   port: env.PORT,
+  hostname: '0.0.0.0',
   routes: {
     '/api/health': () => Response.json({ status: 'ok' }),
 

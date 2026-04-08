@@ -1,42 +1,46 @@
-import React, { useState, useCallback, useRef } from 'react';
+import type React from 'react'
+import { useRef, useState } from 'react'
 
 interface Note {
-  pitch: number;
-  velocity: number; // 0-127
-  duration: number; // milliseconds
+  pitch: number
+  velocity: number // 0-127
+  duration: number // milliseconds
 }
 
 interface XyPadProps {
-  onNoteUpdate?: (note: Note) => void;
-  stepIndex?: number;
+  onNoteUpdate?: (note: Note) => void
+  stepIndex?: number
 }
 
-export const XyPad: React.FC<XyPadProps> = ({ onNoteUpdate, stepIndex }) => {
-  const [note, setNote] = useState<Note | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+export const XyPad: React.FC<XyPadProps> = ({
+  onNoteUpdate,
+  stepIndex: _stepIndex,
+}) => {
+  const [note, setNote] = useState<Note | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
   // Tap timing for duration
-  const tapStartTimeRef = useRef<number | null>(null);
+  const tapStartTimeRef = useRef<number | null>(null)
 
   // Velocity color mapping (low to high)
   const getVelocityColor = (velocity: number): string => {
-    const intensity = velocity / 127;
-    return `hsl(30, ${50 + intensity * 50}%, ${40 + intensity * 60}%)`;
-  };
+    const intensity = velocity / 127
+    return `hsl(30, ${50 + intensity * 50}%, ${40 + intensity * 60}%)`
+  }
 
   // Duration ring thickness
   const getDurationStroke = (durationMs: number): number => {
-    if (durationMs < 250) return 2;
-    if (durationMs < 500) return 4;
-    return 6;
-  };
+    if (durationMs < 250) return 2
+    if (durationMs < 500) return 4
+    return 6
+  }
 
   // Handle note placement/tap
-  const handleTapStart = (event: React.TouchEvent | React.MouseEvent) => {
-    tapStartTimeRef.current = Date.now();
-    setIsEditing(true);
+  const handleTapStart = (_event: React.TouchEvent | React.MouseEvent) => {
+    tapStartTimeRef.current = Date.now()
+    setIsEditing(true)
 
     // If no note, create one with defaults
     if (!note) {
@@ -44,65 +48,75 @@ export const XyPad: React.FC<XyPadProps> = ({ onNoteUpdate, stepIndex }) => {
         pitch: 0, // Will be set by XY position
         velocity: 64, // Medium velocity
         duration: 250, // Short default
-      };
-      setNote(newNote);
+      }
+      setNote(newNote)
     }
-  };
+  }
 
   // Handle note release - determines duration from tap timing
   const handleTapEnd = () => {
-    setIsDragging(false);
-    setIsEditing(false);
+    setIsDragging(false)
+    setIsEditing(false)
 
     if (note && tapStartTimeRef.current) {
-      const tapDuration = Date.now() - tapStartTimeRef.current;
+      const tapDuration = Date.now() - tapStartTimeRef.current
       const updatedNote = {
         ...note,
         duration: tapDuration, // Duration = how long you held
-      };
-      setNote(updatedNote);
-      onNoteUpdate?.(updatedNote);
+      }
+      setNote(updatedNote)
+      onNoteUpdate?.(updatedNote)
     }
-    tapStartTimeRef.current = null;
-  };
+    tapStartTimeRef.current = null
+  }
 
   // Handle slide gestures for velocity/duration adjustment
   const handleDrag = (event: React.TouchEvent | React.MouseEvent) => {
-    if (!isDragging || !note) return;
+    if (!isDragging || !note) return
 
-    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
-    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+    const clientX =
+      'touches' in event ? event.touches[0]!.clientX : event.clientX
+    const clientY =
+      'touches' in event ? event.touches[0]!.clientY : event.clientY
 
-    const deltaX = clientX - dragStart.x;
-    const deltaY = clientY - dragStart.y;
+    const deltaX = clientX - dragStart.x
+    const deltaY = clientY - dragStart.y
 
-    const SENSITIVITY = 2; // Pixels per velocity/duration unit
+    const SENSITIVITY = 2 // Pixels per velocity/duration unit
 
     // Slide up/down = velocity adjustment
-    const newVelocity = Math.max(0, Math.min(127, note.velocity - deltaY * SENSITIVITY));
+    const newVelocity = Math.max(
+      0,
+      Math.min(127, note.velocity - deltaY * SENSITIVITY),
+    )
 
     // Slide left/right = duration adjustment
-    const newDuration = Math.max(50, Math.min(2000, note.duration + deltaX * SENSITIVITY));
+    const newDuration = Math.max(
+      50,
+      Math.min(2000, note.duration + deltaX * SENSITIVITY),
+    )
 
     const updatedNote = {
       ...note,
       velocity: newVelocity,
       duration: newDuration,
-    };
+    }
 
-    setNote(updatedNote);
-    onNoteUpdate?.(updatedNote);
+    setNote(updatedNote)
+    onNoteUpdate?.(updatedNote)
 
-    setDragStart({ x: clientX, y: clientY });
-  };
+    setDragStart({ x: clientX, y: clientY })
+  }
 
-  const handleDragStart = (event: React.TouchEvent | React.MouseEvent) => {
-    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
-    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+  const _handleDragStart = (event: React.TouchEvent | React.MouseEvent) => {
+    const clientX =
+      'touches' in event ? event.touches[0]!.clientX : event.clientX
+    const clientY =
+      'touches' in event ? event.touches[0]!.clientY : event.clientY
 
-    setDragStart({ x: clientX, y: clientY });
-    setIsDragging(true);
-  };
+    setDragStart({ x: clientX, y: clientY })
+    setIsDragging(true)
+  }
 
   return (
     <div
@@ -178,5 +192,5 @@ export const XyPad: React.FC<XyPadProps> = ({ onNoteUpdate, stepIndex }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}

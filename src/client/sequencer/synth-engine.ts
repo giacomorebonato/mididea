@@ -1,6 +1,6 @@
 import * as Tone from 'tone'
-import type { SynthTrack } from './types'
 import { getPresetById } from './synth-presets'
+import type { SynthTrack } from './types'
 
 export class SynthEngine {
   private synths = new Map<string, Tone.PolySynth>()
@@ -12,7 +12,10 @@ export class SynthEngine {
 
     // Create/update synths for each track
     for (const track of tracks) {
-      if (!this.synths.has(track.id) || this.getPresetForTrack(track.id) !== track.presetId) {
+      if (
+        !this.synths.has(track.id) ||
+        this.getPresetForTrack(track.id) !== track.presetId
+      ) {
         this.disposeTrack(track.id)
         const preset = getPresetById(track.presetId)
         const filter = new Tone.Filter(8000, 'lowpass').toDestination()

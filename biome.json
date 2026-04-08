@@ -8,7 +8,8 @@
       "build.ts",
       "*.json",
       "*.ts",
-      "!**/*.css"
+      "!**/*.css",
+      "!.mcp.json"
     ]
   },
   "css": {
@@ -38,6 +39,17 @@
       "recommended": true,
       "correctness": {
         "noUnusedImports": "warn"
+      },
+      "a11y": {
+        "noStaticElementInteractions": "off",
+        "useKeyWithClickEvents": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noExplicitAny": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
       }
     }
   }

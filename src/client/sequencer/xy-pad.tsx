@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as Tone from 'tone'
-import type { SynthNote, SequencerAction } from './types'
-import { SCALES, getScaleNotes, xToScaleNote, noteToColor } from './scales'
+import { getScaleNotes, noteToColor, SCALES, xToScaleNote } from './scales'
 import { getPresetById } from './synth-presets'
+import type { SequencerAction, SynthNote } from './types'
 
 interface XyPadProps {
   trackId: string
@@ -402,7 +402,6 @@ export function XyPad({
           onPointerLeave={handlePointerLeave}
           role="application"
           aria-label={`Note pad with ${scaleNotes.length} pitch columns`}
-          tabIndex={0}
         >
           {/* Note zone labels */}
           {noteZones.map(({ note, left, width }) => (

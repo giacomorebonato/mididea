@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
+import { useOrientation } from './orientation-context'
+import { StepCell } from './step-cell'
+import { SYNTH_PRESETS } from './synth-presets'
+import { SynthStepCell } from './synth-step-cell'
 import type { DrumId, SequencerAction, SequencerState } from './types'
 import { DRUM_IDS, DRUM_LABELS } from './types'
-import { StepCell } from './step-cell'
-import { SynthStepCell } from './synth-step-cell'
-import { SYNTH_PRESETS } from './synth-presets'
-import { useOrientation } from './orientation-context'
 
 interface SequencerGridProps {
   state: SequencerState

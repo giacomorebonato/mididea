@@ -1,5 +1,12 @@
 // --- Drum types ---
-export const DRUM_IDS = ['kick', 'snare', 'hihat', 'clap', 'tom', 'rim'] as const
+export const DRUM_IDS = [
+  'kick',
+  'snare',
+  'hihat',
+  'clap',
+  'tom',
+  'rim',
+] as const
 export type DrumId = (typeof DRUM_IDS)[number]
 
 export const DRUM_LABELS: Record<DrumId, string> = {
@@ -15,9 +22,9 @@ export type DrumGrid = Record<DrumId, boolean[]>
 
 // --- Synth types ---
 export interface SynthNote {
-  pitch: string     // e.g. "C4", "E4"
-  velocity: number  // 0-1, Y-axis value (loud ↔ soft)
-  duration: number  // steps to sustain (1 = 16th, 2 = 8th, etc.)
+  pitch: string // e.g. "C4", "E4"
+  velocity: number // 0-1, Y-axis value (loud ↔ soft)
+  duration: number // steps to sustain (1 = 16th, 2 = 8th, etc.)
 }
 
 /** A single synth step can hold multiple notes (chords) */
@@ -56,11 +63,29 @@ export type SequencerAction =
   | { type: 'TOGGLE_STEP'; drum: DrumId; step: number }
   // Synth actions
   | { type: 'ADD_SYNTH_NOTE'; trackId: string; step: number; note: SynthNote }
-  | { type: 'REMOVE_SYNTH_NOTE'; trackId: string; step: number; noteIndex: number }
+  | {
+      type: 'REMOVE_SYNTH_NOTE'
+      trackId: string
+      step: number
+      noteIndex: number
+    }
   | { type: 'CLEAR_SYNTH_STEP'; trackId: string; step: number }
   | { type: 'SET_SYNTH_PRESET'; trackId: string; presetId: string }
-  | { type: 'SET_SYNTH_NOTE_DURATION'; trackId: string; step: number; noteIndex: number; duration: number }
-  | { type: 'UPDATE_SYNTH_NOTE'; trackId: string; step: number; noteIndex: number; pitch: string; velocity: number }
+  | {
+      type: 'SET_SYNTH_NOTE_DURATION'
+      trackId: string
+      step: number
+      noteIndex: number
+      duration: number
+    }
+  | {
+      type: 'UPDATE_SYNTH_NOTE'
+      trackId: string
+      step: number
+      noteIndex: number
+      pitch: string
+      velocity: number
+    }
   // XY pad
   | { type: 'OPEN_XY_PAD'; trackId: string; step: number }
   | { type: 'CLOSE_XY_PAD' }
@@ -91,7 +116,11 @@ export function createEmptyDrumGrid(stepCount: number): DrumGrid {
 /** @deprecated Use createEmptyDrumGrid instead */
 export const createEmptyGrid = createEmptyDrumGrid
 
-export function createEmptySynthTrack(id: string, presetId: string, stepCount: number): SynthTrack {
+export function createEmptySynthTrack(
+  id: string,
+  presetId: string,
+  stepCount: number,
+): SynthTrack {
   return {
     id,
     presetId,

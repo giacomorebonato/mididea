@@ -1,8 +1,13 @@
-import { useState } from 'react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { trpc } from '../trpc'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { authClient } from '../auth'
+import { trpc } from '../trpc'
 
 export function CreationsPage() {
   const session = authClient.useSession()
@@ -80,7 +85,8 @@ export function CreationsPage() {
                 <CardHeader>
                   <CardTitle className="text-base">{c.title}</CardTitle>
                   <p className="text-xs text-muted-foreground">
-                    by {c.author.name ?? 'Anonymous'} · {new Date(c.createdAt).toLocaleDateString()}
+                    by {c.author.name ?? 'Anonymous'} ·{' '}
+                    {new Date(c.createdAt).toLocaleDateString()}
                   </p>
                 </CardHeader>
                 <CardFooter className="gap-2">

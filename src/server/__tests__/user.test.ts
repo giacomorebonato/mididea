@@ -32,7 +32,7 @@ describe('user router', () => {
     const caller = createCaller()
     const users = await caller.user.list()
     expect(users.length).toBeGreaterThanOrEqual(1)
-    expect(users[0]!.email).toBe('test@example.com')
+    expect(users[0]?.email).toBe('test@example.com')
   })
 
   test('byId returns the user with posts', async () => {

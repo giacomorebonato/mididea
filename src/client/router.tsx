@@ -3,8 +3,8 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router'
-import { RootLayout } from './pages/root-layout'
 import { CreationsPage } from './pages/creations-page'
+import { RootLayout } from './pages/root-layout'
 import { SequencerPage } from './sequencer/sequencer-page'
 
 const rootRoute = createRootRoute({
