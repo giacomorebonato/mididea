@@ -1,6 +1,8 @@
 # Mididea
 
-A fun, embeddable collaborative music toy. Make beats with friends — no DAW, no cost, no complexity.
+> A fun, embeddable collaborative music toy. Make beats with friends — no DAW, no cost, no complexity.
+
+**Not a DAW. A toy. A fun one.**
 
 ## Why Mididea?
 
