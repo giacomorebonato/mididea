@@ -155,9 +155,21 @@ export function XyPad({
       if (!canvasRef.current) return
       await Tone.start()
 
+      const rect = canvasRef.current.getBoundingClientRect()
+      const clickX = e.clientX - rect.left
+      const clickY = e.clientY - rect.top
+      const normY = Math.max(0, Math.min(1, 1 - clickY / rect.height)) // top=1, bottom=0
+
+      // Duration from Y position: top = long (16), bottom = short (1)
+      const initialDuration = Math.max(
+        1,
+        Math.min(16, Math.round(normY * 15 + 1)),
+      )
+
       const hitIdx = hitTestNote(e)
 
       if (hitIdx !== null) {
+        // Clicked directly on an existing bar — start drag
         const note = existingNotes[hitIdx]
         if (!note) return
         setDragState({
@@ -173,25 +185,63 @@ export function XyPad({
         })
         canvasRef.current.setPointerCapture(e.pointerId)
       } else {
+        // Clicked empty space — determine pitch column from X
         const pitch = pointerToPitch(e)
         if (!pitch) return
+        const noteIdx = scaleNotes.indexOf(pitch)
+        if (noteIdx === -1) return
+
+        // Velocity from X position within the column: left = quiet, right = loud
+        const colLeft = (noteIdx / scaleNotes.length) * rect.width
+        const colWidth = rect.width / scaleNotes.length
+        const xInColumn = Math.max(
+          0,
+          Math.min(1, (clickX - colLeft) / colWidth),
+        )
+        const initialVelocity = Math.max(0.1, Math.min(1, xInColumn))
+
         const existingIdx = existingNotes.findIndex((n) => n.pitch === pitch)
 
         if (existingIdx !== -1) {
-          dispatch({
-            type: 'REMOVE_SYNTH_NOTE',
-            trackId,
-            step,
+          // Note exists in this column — start drag from it (column-wide interaction)
+          const note = existingNotes[existingIdx]!
+          setDragState({
             noteIndex: existingIdx,
+            pitch: note.pitch,
+            startClientX: e.clientX,
+            startClientY: e.clientY,
+            initialDuration: note.duration ?? 1,
+            initialVelocity: note.velocity ?? 0.5,
+            currentDuration: note.duration ?? 1,
+            currentVelocity: note.velocity ?? 0.5,
+            hasDragged: false,
           })
+          canvasRef.current.setPointerCapture(e.pointerId)
         } else {
+          // No note in column — create one with position-derived velocity & duration, then drag
           dispatch({
             type: 'ADD_SYNTH_NOTE',
             trackId,
             step,
-            note: { pitch, velocity: 0.5, duration: 1 },
+            note: {
+              pitch,
+              velocity: initialVelocity,
+              duration: initialDuration,
+            },
           })
-          previewNote(pitch, 0.5, 200)
+          previewNote(pitch, initialVelocity, 200)
+          setDragState({
+            noteIndex: existingNotes.length, // new note will be appended at this index
+            pitch,
+            startClientX: e.clientX,
+            startClientY: e.clientY,
+            initialDuration,
+            initialVelocity,
+            currentDuration: initialDuration,
+            currentVelocity: initialVelocity,
+            hasDragged: false,
+          })
+          canvasRef.current.setPointerCapture(e.pointerId)
         }
       }
     },
@@ -203,6 +253,7 @@ export function XyPad({
       step,
       existingNotes,
       previewNote,
+      scaleNotes,
     ],
   )
 
