@@ -1,0 +1,219 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - link "Mididea" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - link "Creations" [ref=e7] [cursor=pointer]:
+        - /url: /creations
+        - button "Creations" [ref=e8]
+      - button "Sign in" [ref=e9]
+  - main [ref=e10]:
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - paragraph [ref=e14]: Space = play/stop · Tap synth steps to add notes
+        - generic [ref=e15]:
+          - generic [ref=e16]:
+            - button "Play" [ref=e17]
+            - generic [ref=e18]:
+              - generic [ref=e19]: BPM
+              - spinbutton "BPM" [ref=e20]: "120"
+            - generic [ref=e21]:
+              - generic [ref=e22]: Swing
+              - slider "Swing" [ref=e23]: "0"
+              - generic [ref=e24]: 0%
+            - generic [ref=e25]:
+              - generic [ref=e26]: Key
+              - combobox [ref=e27]:
+                - option "C" [selected]
+                - option "C#"
+                - option "D"
+                - option "D#"
+                - option "E"
+                - option "F"
+                - option "F#"
+                - option "G"
+                - option "G#"
+                - option "A"
+                - option "A#"
+                - option "B"
+              - combobox [ref=e28]:
+                - option "Happy (Major Pentatonic)" [selected]
+                - option "Melancholic (Minor Pentatonic)"
+                - option "Funky (Dorian)"
+                - option "Mysterious (Phrygian)"
+                - option "Groovy (Mixolydian)"
+                - option "Soulful (Blues)"
+                - option "Dark (Harmonic Minor)"
+                - option "Spacey (Whole Tone)"
+            - generic [ref=e29]:
+              - button "Clear" [ref=e30]
+              - button "Export MIDI" [ref=e31]
+          - generic [ref=e33]:
+            - generic [ref=e35]: "1"
+            - generic [ref=e36]: "2"
+            - generic [ref=e37]: "3"
+            - generic [ref=e38]: "4"
+            - generic [ref=e39]: "5"
+            - generic [ref=e40]: "6"
+            - generic [ref=e41]: "7"
+            - generic [ref=e42]: "8"
+            - generic [ref=e43]: "9"
+            - generic [ref=e44]: "10"
+            - generic [ref=e45]: "11"
+            - generic [ref=e46]: "12"
+            - generic [ref=e47]: "13"
+            - generic [ref=e48]: "14"
+            - generic [ref=e49]: "15"
+            - generic [ref=e50]: "16"
+            - generic [ref=e68]:
+              - generic [ref=e69]: Kick
+              - button [ref=e70]
+              - button [ref=e71]
+              - button [ref=e72]
+              - button [ref=e73]
+              - button [ref=e74]
+              - button [ref=e75]
+              - button [ref=e76]
+              - button [ref=e77]
+              - button [ref=e78]
+              - button [ref=e79]
+              - button [ref=e80]
+              - button [ref=e81]
+              - button [ref=e82]
+              - button [ref=e83]
+              - button [ref=e84]
+              - button [ref=e85]
+            - generic [ref=e86]:
+              - generic [ref=e87]: Snare
+              - button [ref=e88]
+              - button [ref=e89]
+              - button [ref=e90]
+              - button [ref=e91]
+              - button [ref=e92]
+              - button [ref=e93]
+              - button [ref=e94]
+              - button [ref=e95]
+              - button [ref=e96]
+              - button [ref=e97]
+              - button [ref=e98]
+              - button [ref=e99]
+              - button [ref=e100]
+              - button [ref=e101]
+              - button [ref=e102]
+              - button [ref=e103]
+            - generic [ref=e104]:
+              - generic [ref=e105]: Hi-Hat
+              - button [ref=e106]
+              - button [ref=e107]
+              - button [ref=e108]
+              - button [ref=e109]
+              - button [ref=e110]
+              - button [ref=e111]
+              - button [ref=e112]
+              - button [ref=e113]
+              - button [ref=e114]
+              - button [ref=e115]
+              - button [ref=e116]
+              - button [ref=e117]
+              - button [ref=e118]
+              - button [ref=e119]
+              - button [ref=e120]
+              - button [ref=e121]
+            - generic [ref=e122]:
+              - generic [ref=e123]: Clap
+              - button [ref=e124]
+              - button [ref=e125]
+              - button [ref=e126]
+              - button [ref=e127]
+              - button [ref=e128]
+              - button [ref=e129]
+              - button [ref=e130]
+              - button [ref=e131]
+              - button [ref=e132]
+              - button [ref=e133]
+              - button [ref=e134]
+              - button [ref=e135]
+              - button [ref=e136]
+              - button [ref=e137]
+              - button [ref=e138]
+              - button [ref=e139]
+            - generic [ref=e140]:
+              - generic [ref=e141]: Tom
+              - button [ref=e142]
+              - button [ref=e143]
+              - button [ref=e144]
+              - button [ref=e145]
+              - button [ref=e146]
+              - button [ref=e147]
+              - button [ref=e148]
+              - button [ref=e149]
+              - button [ref=e150]
+              - button [ref=e151]
+              - button [ref=e152]
+              - button [ref=e153]
+              - button [ref=e154]
+              - button [ref=e155]
+              - button [ref=e156]
+              - button [ref=e157]
+            - generic [ref=e158]:
+              - generic [ref=e159]: Rim
+              - button [ref=e160]
+              - button [ref=e161]
+              - button [ref=e162]
+              - button [ref=e163]
+              - button [ref=e164]
+              - button [ref=e165]
+              - button [ref=e166]
+              - button [ref=e167]
+              - button [ref=e168]
+              - button [ref=e169]
+              - button [ref=e170]
+              - button [ref=e171]
+              - button [ref=e172]
+              - button [ref=e173]
+              - button [ref=e174]
+              - button [ref=e175]
+            - generic [ref=e177]:
+              - generic [ref=e178]:
+                - generic [ref=e179]: Glass
+                - button "↻ change" [ref=e180]
+              - generic [ref=e182] [cursor=pointer]: +
+              - generic [ref=e184] [cursor=pointer]: +
+              - generic [ref=e186] [cursor=pointer]: +
+              - generic [ref=e188] [cursor=pointer]: +
+              - generic [ref=e190] [cursor=pointer]: +
+              - generic [ref=e192] [cursor=pointer]: +
+              - generic [ref=e194] [cursor=pointer]: +
+              - generic [ref=e196] [cursor=pointer]: +
+              - generic [ref=e198] [cursor=pointer]: +
+              - generic [ref=e200] [cursor=pointer]: +
+              - generic [ref=e202] [cursor=pointer]: +
+              - generic [ref=e204] [cursor=pointer]: +
+              - generic [ref=e206] [cursor=pointer]: +
+              - generic [ref=e208] [cursor=pointer]: +
+              - generic [ref=e210] [cursor=pointer]: +
+              - generic [ref=e212] [cursor=pointer]: +
+      - dialog "XY Pad editor for step 1" [ref=e213]:
+        - generic [ref=e214]:
+          - generic [ref=e215]: Step 1 — Happy (Major Pentatonic)
+          - button "Close XY Pad" [ref=e216]: Done
+        - note [ref=e217]: Tap to add · Double-tap bar to remove · Drag bar ↑↓ duration · Drag bar ←→ velocity
+        - application "Note pad with 15 pitch columns" [ref=e219]:
+          - generic [ref=e221]: C3
+          - generic [ref=e223]: D3
+          - generic [ref=e225]: E3
+          - generic [ref=e227]: G3
+          - generic [ref=e229]: A3
+          - generic [ref=e231]: C4
+          - generic [ref=e233]: D4
+          - generic [ref=e235]: E4
+          - generic [ref=e237]: G4
+          - generic [ref=e239]: A4
+          - generic [ref=e241]: C5
+          - generic [ref=e243]: D5
+          - generic [ref=e245]: E5
+          - generic [ref=e247]: G5
+          - generic [ref=e249]: A5
+          - generic [ref=e250]: Long ↑
+          - generic [ref=e251]: Short ↓
+          - generic [ref=e252]: Quiet ← Loud →

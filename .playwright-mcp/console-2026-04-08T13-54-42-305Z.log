@@ -1,0 +1,5 @@
+[      63ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_bun/client/index-00000000a366bee7.js:74217
+[      65ms] [LOG] %c * Tone.js v15.1.22 *  background: #000; color: #fff @ http://localhost:3000/_bun/client/index-00000000a366bee7.js:23
+[      84ms] [WARNING] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio @ http://localhost:3000/_bun/client/index-00000000a366bee7.js:23456
+[      84ms] [WARNING] The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio @ http://localhost:3000/_bun/client/index-00000000a366bee7.js:29613
+[      93ms] [INFO] [Bun] Hot-module-reloading socket connected, waiting for changes... @ http://localhost:3000/_bun/client/index-00000000a366bee7.js:20
