@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  emailVerified Boolean   @default(false)
-  name          String?
-  image         String?
-  posts         Post[]
-  compositions  Composition[]
-  likes         Like[]
-  sessions      Session[]
-  accounts      Account[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id             String         @id @default(cuid())
+  email          String         @unique
+  emailVerified  Boolean        @default(false)
+  name           String?
+  image          String?
+  posts          Post[]
+  compositions   Composition[]
+  likes          Like[]
+  collaborations Collaborator[]
+  sessions       Session[]
+  accounts       Account[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 model Session {
@@ -72,15 +73,27 @@ model Post {
 }
 
 model Composition {
-  id        String   @id @default(cuid())
-  title     String
-  data      String   // JSON-serialized SequencerState
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  String
-  likes     Like[]
-  likeCount Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String         @id @default(cuid())
+  title         String
+  data          String         // JSON-serialized SequencerState
+  author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId      String
+  likes         Like[]
+  collaborators Collaborator[]
+  likeCount     Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Collaborator {
+  id            String      @id @default(cuid())
+  composition   Composition @relation(fields: [compositionId], references: [id], onDelete: Cascade)
+  compositionId String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  createdAt     DateTime    @default(now())
+
+  @@unique([compositionId, userId])
 }
 
 model Like {

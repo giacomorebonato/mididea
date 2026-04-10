@@ -101,6 +101,18 @@ export type SequencerAction =
   | { type: 'STOP' }
   | { type: 'ADVANCE_STEP' }
   | { type: 'CLEAR_ALL' }
+  // Collaboration
+  | { type: 'REMOTE_ACTION'; action: SequencerAction }
+  | { type: 'LOAD_STATE'; state: SequencerState }
+
+/** Actions that should not be broadcast to collaborators */
+export const TRANSIENT_ACTION_TYPES = new Set<SequencerAction['type']>([
+  'PLAY',
+  'STOP',
+  'ADVANCE_STEP',
+  'OPEN_XY_PAD',
+  'CLOSE_XY_PAD',
+])
 
 // --- Backward compat alias ---
 export type Grid = DrumGrid

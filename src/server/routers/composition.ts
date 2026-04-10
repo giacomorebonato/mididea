@@ -51,6 +51,13 @@ export const compositionRouter = router({
         where: { id: input.id },
         include: {
           author: { select: { id: true, name: true, image: true } },
+          collaborators: {
+            include: {
+              user: {
+                select: { id: true, name: true, email: true, image: true },
+              },
+            },
+          },
         },
       })
     }),
