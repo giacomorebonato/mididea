@@ -193,6 +193,15 @@ export function sequencerReducer(
         isPlaying: false,
         currentStep: -1,
       }
+    case 'REMOTE_ACTION':
+      return sequencerReducer(state, action.action)
+    case 'LOAD_STATE':
+      return {
+        ...action.state,
+        isPlaying: false,
+        currentStep: -1,
+        activeXyPad: null,
+      }
     default:
       return state
   }
