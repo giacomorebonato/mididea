@@ -129,3 +129,20 @@ export function noteToColor(note: string): string {
   const hue = normalized * 270
   return `hsl(${hue}, 80%, 55%)`
 }
+
+/**
+ * Get a velocity-aware color for a note.
+ * Low velocity = washed-out/pastel, high velocity = vivid/solid.
+ */
+export function noteToColorWithVelocity(
+  note: string,
+  velocity: number,
+): string {
+  const midi = noteToMidi(note)
+  const normalized = Math.max(0, Math.min(1, (midi - 36) / 48))
+  const hue = normalized * 270
+  const v = Math.max(0, Math.min(1, velocity))
+  const saturation = 30 + v * 50
+  const lightness = 75 - v * 20
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+}
