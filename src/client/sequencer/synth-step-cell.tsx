@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { noteToColor } from './scales'
+import { noteToColorWithVelocity } from './scales'
 import type { SequencerAction, SynthNote } from './types'
 
 interface SynthStepCellProps {
@@ -46,13 +46,22 @@ export const SynthStepCell = memo(function SynthStepCell({
           {notes.map((note, i) => (
             <div
               key={`${note.pitch}-${i}`}
-              className="w-full rounded-sm flex-shrink-0"
+              className="w-full rounded-sm flex-shrink-0 flex items-center justify-center overflow-hidden"
               style={{
-                backgroundColor: noteToColor(note.pitch),
+                backgroundColor: noteToColorWithVelocity(
+                  note.pitch,
+                  note.velocity,
+                ),
                 height: `${Math.max(20, 100 / Math.max(notes.length, 4))}%`,
-                opacity: 0.6 + note.velocity * 0.4,
               }}
-            />
+            >
+              <span
+                className="text-[8px] leading-none font-medium text-white select-none"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}
+              >
+                {note.pitch}
+              </span>
+            </div>
           ))}
         </div>
       )}
