@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ROOT_NOTES, SCALES } from './scales'
 import type { SequencerAction, SequencerState } from './types'
@@ -21,11 +20,10 @@ export function SequencerControls({
   compact,
 }: SequencerControlsProps) {
   const { isPlaying, bpm, swing, scaleIndex, rootNote } = state
-  const _scale = SCALES[scaleIndex]
 
   if (compact) {
     return (
-      <div className="flex items-center gap-1.5 text-xs">
+      <div className="flex w-full items-center gap-1.5 text-xs">
         <Button
           onClick={() => dispatch({ type: isPlaying ? 'STOP' : 'PLAY' })}
           variant={isPlaying ? 'destructive' : 'default'}
@@ -35,32 +33,35 @@ export function SequencerControls({
           {isPlaying ? 'Stop' : 'Play'}
         </Button>
 
-        <div className="flex items-center gap-1">
-          <Label htmlFor="bpm" className="text-[10px] whitespace-nowrap">
+        <div className="flex items-center gap-1 flex-1 min-w-0">
+          <Label htmlFor="bpm-compact" className="text-[10px] whitespace-nowrap shrink-0">
             BPM
           </Label>
-          <Input
-            id="bpm"
-            type="number"
+          <input
+            id="bpm-compact"
+            type="range"
             min={MIN_BPM}
             max={MAX_BPM}
             value={bpm}
             onChange={(e) =>
               dispatch({
                 type: 'SET_BPM',
-                bpm: Number.parseInt(e.target.value, 10) || MIN_BPM,
+                bpm: Number.parseInt(e.target.value, 10),
               })
             }
-            className="w-12 h-7 text-xs px-1"
+            className="flex-1 min-w-0 accent-white"
           />
+          <span className="text-[10px] text-muted-foreground w-6 text-right tabular-nums shrink-0">
+            {bpm}
+          </span>
         </div>
 
         <div className="flex items-center gap-1">
-          <Label htmlFor="swing" className="text-[10px] whitespace-nowrap">
+          <Label htmlFor="swing-compact" className="text-[10px] whitespace-nowrap">
             Sw
           </Label>
           <input
-            id="swing"
+            id="swing-compact"
             type="range"
             min={0}
             max={MAX_SWING}
@@ -127,41 +128,44 @@ export function SequencerControls({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-      {/* Row 1: Transport + BPM + Swing */}
+    <div className="flex w-full items-center gap-3 sm:gap-5">
+      {/* Play/Stop */}
       <Button
         onClick={() => dispatch({ type: isPlaying ? 'STOP' : 'PLAY' })}
         variant={isPlaying ? 'destructive' : 'default'}
         size="lg"
-        className="min-w-[4.5rem]"
+        className="min-w-[4.5rem] shrink-0"
       >
         {isPlaying ? 'Stop' : 'Play'}
       </Button>
 
-      {/* BPM */}
-      <div className="flex items-center gap-1.5">
-        <Label htmlFor="bpm" className="text-xs sm:text-sm whitespace-nowrap">
+      {/* BPM slider */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <Label htmlFor="bpm" className="text-xs sm:text-sm whitespace-nowrap shrink-0">
           BPM
         </Label>
-        <Input
+        <input
           id="bpm"
-          type="number"
+          type="range"
           min={MIN_BPM}
           max={MAX_BPM}
           value={bpm}
           onChange={(e) =>
             dispatch({
               type: 'SET_BPM',
-              bpm: Number.parseInt(e.target.value, 10) || MIN_BPM,
+              bpm: Number.parseInt(e.target.value, 10),
             })
           }
-          className="w-16 sm:w-20 h-9"
+          className="flex-1 min-w-0 accent-white"
         />
+        <span className="text-sm font-medium tabular-nums w-8 text-right shrink-0">
+          {bpm}
+        </span>
       </div>
 
-      {/* Swing */}
-      <div className="flex items-center gap-1.5">
-        <Label htmlFor="swing" className="text-xs sm:text-sm whitespace-nowrap">
+      {/* Swing slider */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <Label htmlFor="swing" className="text-xs sm:text-sm whitespace-nowrap shrink-0">
           Swing
         </Label>
         <input
@@ -176,16 +180,15 @@ export function SequencerControls({
               swing: Number.parseInt(e.target.value, 10),
             })
           }
-          className="w-16 sm:w-20 accent-white"
+          className="flex-1 min-w-0 accent-white"
         />
-        <span className="text-xs text-muted-foreground w-8">{swing}%</span>
+        <span className="text-xs text-muted-foreground w-8 text-right tabular-nums shrink-0">
+          {swing}%
+        </span>
       </div>
 
-      {/* Scale selector */}
-      <div className="flex items-center gap-1.5">
-        <Label htmlFor="root" className="text-xs sm:text-sm whitespace-nowrap">
-          Key
-        </Label>
+      {/* Key + Scale */}
+      <div className="flex items-center gap-1.5 shrink-0">
         <select
           id="root"
           value={rootNote}
@@ -209,7 +212,7 @@ export function SequencerControls({
               scaleIndex: Number.parseInt(e.target.value, 10),
             })
           }
-          className="h-10 rounded-md border border-border bg-background px-2 text-sm max-w-[10rem]"
+          className="h-10 rounded-md border border-border bg-background px-2 text-sm"
         >
           {SCALES.map((s, i) => (
             <option key={s.name} value={i}>
@@ -219,7 +222,8 @@ export function SequencerControls({
         </select>
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* Actions */}
+      <div className="flex items-center gap-2 shrink-0">
         <Button
           variant="outline"
           size="sm"
@@ -228,7 +232,7 @@ export function SequencerControls({
           Clear
         </Button>
         <Button variant="secondary" size="sm" onClick={onExport}>
-          Export MIDI
+          MIDI
         </Button>
         {children}
       </div>
