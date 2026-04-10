@@ -51,7 +51,7 @@
       "style": {
         "noNonNullAssertion": "off",
         "useFilenamingConvention": {
-          "level": "warn",
+          "level": "error",
           "options": {
             "filenameCases": ["kebab-case"]
           }
