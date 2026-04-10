@@ -34,7 +34,10 @@ export function SequencerControls({
         </Button>
 
         <div className="flex items-center gap-1 flex-1 min-w-0">
-          <Label htmlFor="bpm-compact" className="text-[10px] whitespace-nowrap shrink-0">
+          <Label
+            htmlFor="bpm-compact"
+            className="text-[10px] whitespace-nowrap shrink-0"
+          >
             BPM
           </Label>
           <input
@@ -57,7 +60,10 @@ export function SequencerControls({
         </div>
 
         <div className="flex items-center gap-1">
-          <Label htmlFor="swing-compact" className="text-[10px] whitespace-nowrap">
+          <Label
+            htmlFor="swing-compact"
+            className="text-[10px] whitespace-nowrap"
+          >
             Sw
           </Label>
           <input
@@ -141,7 +147,10 @@ export function SequencerControls({
 
       {/* BPM slider */}
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <Label htmlFor="bpm" className="text-xs sm:text-sm whitespace-nowrap shrink-0">
+        <Label
+          htmlFor="bpm"
+          className="text-xs sm:text-sm whitespace-nowrap shrink-0"
+        >
           BPM
         </Label>
         <input
@@ -165,7 +174,10 @@ export function SequencerControls({
 
       {/* Swing slider */}
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <Label htmlFor="swing" className="text-xs sm:text-sm whitespace-nowrap shrink-0">
+        <Label
+          htmlFor="swing"
+          className="text-xs sm:text-sm whitespace-nowrap shrink-0"
+        >
           Swing
         </Label>
         <input
