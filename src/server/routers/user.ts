@@ -3,9 +3,7 @@ import { publicProcedure, router } from '../trpc'
 
 export const userRouter = router({
   list: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.user.findMany({
-      include: { posts: { where: { published: true } } },
-    })
+    return ctx.prisma.user.findMany()
   }),
 
   byId: publicProcedure
@@ -13,7 +11,6 @@ export const userRouter = router({
     .query(({ ctx, input }) => {
       return ctx.prisma.user.findUniqueOrThrow({
         where: { id: input.id },
-        include: { posts: true },
       })
     }),
 

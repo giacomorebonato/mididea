@@ -8,10 +8,8 @@ function caller(ctx: unknown) {
 }
 
 describe('userRouter', () => {
-  test('list returns users with published posts', async () => {
-    const users: any[] = [
-      { id: 'u1', name: 'Alice', posts: [{ id: 'p1', published: true }] },
-    ]
+  test('list returns users', async () => {
+    const users: any[] = [{ id: 'u1', name: 'Alice' }]
     const c = caller({
       prisma: { user: { findMany: async () => users as any } },
       session: null,
@@ -20,8 +18,8 @@ describe('userRouter', () => {
     expect(result).toEqual(users)
   })
 
-  test('byId returns user with posts', async () => {
-    const user: any = { id: 'u1', name: 'Alice', posts: [] }
+  test('byId returns user', async () => {
+    const user: any = { id: 'u1', name: 'Alice' }
     const c = caller({
       prisma: { user: { findUniqueOrThrow: async () => user as any } },
       session: null,
