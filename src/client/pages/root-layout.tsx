@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from '@tanstack/react-router'
+import { AuthButton } from '@/components/auth-button'
 import { Button } from '@/components/ui/button'
-import { AuthButton } from '../components/auth-button'
 import { useOrientation } from '../sequencer/orientation-context'
 
 export function RootLayout() {

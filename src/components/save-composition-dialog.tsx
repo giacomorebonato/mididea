@@ -1,10 +1,10 @@
 import { useState } from 'react'
+import { authClient } from '@/client/auth'
+import type { SequencerState } from '@/client/sequencer/types'
+import { trpc } from '@/client/trpc'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { authClient } from '../auth'
-import type { SequencerState } from '../sequencer/types'
-import { trpc } from '../trpc'
 
 const TRANSIENT_KEYS = ['isPlaying', 'currentStep', 'activeXyPad'] as const
 

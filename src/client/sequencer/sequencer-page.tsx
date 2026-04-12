@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
+import { SaveCompositionDialog } from '@/components/save-composition-dialog'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { SaveCompositionDialog } from '../components/save-composition-dialog'
 import { AudioEngine } from './audio-engine'
 import { LandscapePrompt } from './landscape-prompt'
 import { exportMidi } from './midi-export'
