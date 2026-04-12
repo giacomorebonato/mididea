@@ -14,20 +14,6 @@ async function main() {
       email: 'alice@example.com',
       name: 'Alice',
       emailVerified: true,
-      posts: {
-        create: [
-          {
-            title: 'Getting Started with Bun',
-            content: 'Bun is an all-in-one JavaScript runtime & toolkit.',
-            published: true,
-          },
-          {
-            title: 'Type-Safe APIs with tRPC',
-            content: 'tRPC lets you build end-to-end typesafe APIs.',
-            published: true,
-          },
-        ],
-      },
     },
   })
 
@@ -38,21 +24,6 @@ async function main() {
       email: 'bob@example.com',
       name: 'Bob',
       emailVerified: true,
-      posts: {
-        create: [
-          {
-            title: 'Deploy to Fly.io',
-            content:
-              'Fly.io makes it easy to deploy full-stack apps close to your users.',
-            published: true,
-          },
-          {
-            title: 'Draft Post',
-            content: "This is a draft that hasn't been published yet.",
-            published: false,
-          },
-        ],
-      },
     },
   })
 
