@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { userRouter } from '../user'
+import { userRouter } from './user'
 
 function caller(ctx: unknown) {
   return (

@@ -2,12 +2,12 @@ import { Database } from 'bun:sqlite'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
-import { PrismaClient } from '../../../generated/prisma/client.ts'
+import { PrismaClient } from '../../generated/prisma/client.ts'
 
 const migrationSql = readFileSync(
   join(
     import.meta.dir,
-    '../../../prisma/migrations/20260401081517_init/migration.sql',
+    '../../prisma/migrations/20260401081517_init/migration.sql',
   ),
   'utf-8',
 )

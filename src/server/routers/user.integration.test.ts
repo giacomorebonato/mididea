@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, test } from 'bun:test'
-import { appRouter } from '../routers/_app'
-import { createTestDb } from './setup'
+import { createTestDb } from '../test-setup'
+import { appRouter } from './_app'
 
 const { prisma, cleanup } = createTestDb('test-user')
 
