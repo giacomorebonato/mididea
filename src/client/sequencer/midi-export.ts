@@ -1,5 +1,5 @@
 import MidiWriter from 'midi-writer-js'
-import { noteToMidi } from './scales'
+import { noteToMidi } from './audio/scales'
 import type { DrumGrid, DrumId, SynthTrack } from './types'
 import { DRUM_IDS } from './types'
 

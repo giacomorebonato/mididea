@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as Tone from 'tone'
-import { getScaleNotes, noteToColor, SCALES, xToScaleNote } from './scales'
-import { getPresetById } from './synth-presets'
+import {
+  getScaleNotes,
+  noteToColor,
+  SCALES,
+  xToScaleNote,
+} from './audio/scales'
+import { getPresetById } from './audio/synth-presets'
 import type { SequencerAction, SynthNote } from './types'
 
 interface XyPadProps {

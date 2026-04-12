@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { noteToColorWithVelocity } from './scales'
+import { noteToColorWithVelocity } from './audio/scales'
 import type { SequencerAction, SynthNote } from './types'
 
 interface SynthStepCellProps {

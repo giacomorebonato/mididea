@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
+import { SYNTH_PRESETS } from './audio/synth-presets'
 import { useOrientation } from './orientation-context'
 import { StepCell } from './step-cell'
-import { SYNTH_PRESETS } from './synth-presets'
 import { SynthStepCell } from './synth-step-cell'
 import type { DrumId, SequencerAction, SequencerState } from './types'
 import { DRUM_IDS, DRUM_LABELS } from './types'

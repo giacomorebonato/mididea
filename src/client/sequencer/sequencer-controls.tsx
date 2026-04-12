@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { ROOT_NOTES, SCALES } from './scales'
+import { ROOT_NOTES, SCALES } from './audio/scales'
 import type { SequencerAction, SequencerState } from './types'
 import { MAX_BPM, MAX_SWING, MIN_BPM } from './types'
 
