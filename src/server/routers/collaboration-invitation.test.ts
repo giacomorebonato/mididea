@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { collaborationRouter } from '../collaboration'
+import { collaborationRouter } from './collaboration'
 
 const C = collaborationRouter as unknown as {
   createCaller: (ctx: unknown) => unknown

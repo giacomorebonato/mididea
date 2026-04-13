@@ -1,6 +1,6 @@
+import { authClient } from '@/client/auth'
+import { trpc } from '@/client/trpc'
 import { Button } from '@/components/ui/button'
-import { authClient } from '../auth'
-import { trpc } from '../trpc'
 
 export function InvitationBanner() {
   const session = authClient.useSession()

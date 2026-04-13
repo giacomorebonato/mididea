@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { authClient } from '@/client/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { authClient } from '../auth'
 
 interface AuthInlineProps {
   onSuccess: () => void
