@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import type { SequencerState } from '../types'
+import type { SequencerState } from './types'
 import {
   DEFAULT_BPM,
   DEFAULT_STEP_COUNT,
@@ -7,13 +7,13 @@ import {
   MAX_BPM,
   MAX_SWING,
   MIN_BPM,
-} from '../types'
+} from './types'
 import {
   initialState,
   STORAGE_KEY,
   sequencerReducer,
   TRANSIENT_KEYS,
-} from '../use-sequencer'
+} from './use-sequencer'
 
 describe('constants', () => {
   test('STORAGE_KEY is the expected value', () => {

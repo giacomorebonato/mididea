@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { compositionRouter } from '../composition'
+import { compositionRouter } from './composition'
 
 const C = compositionRouter as unknown as {
   createCaller: (ctx: unknown) => unknown

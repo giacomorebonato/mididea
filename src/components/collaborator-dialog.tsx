@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { trpc } from '@/client/trpc'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { trpc } from '../trpc'
 
 interface CollaboratorDialogProps {
   compositionId: string

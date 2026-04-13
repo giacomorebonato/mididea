@@ -1,4 +1,4 @@
-import type { DrumId } from './types'
+import type { DrumId } from '../types'
 
 type DrumSoundFn = (ctx: AudioContext, time: number) => void
 

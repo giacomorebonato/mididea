@@ -1,8 +1,8 @@
 import * as Tone from 'tone'
+import type { DrumGrid, SynthTrack } from '../types'
+import { DRUM_IDS } from '../types'
 import { drumSounds } from './drum-sounds'
 import { SynthEngine } from './synth-engine'
-import type { DrumGrid, SynthTrack } from './types'
-import { DRUM_IDS } from './types'
 
 const SCHEDULE_AHEAD = 0.1 // seconds to schedule ahead
 const LOOKAHEAD = 25 // ms between scheduler checks

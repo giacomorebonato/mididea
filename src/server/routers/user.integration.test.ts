@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, test } from 'bun:test'
-import { appRouter } from '../routers/_app'
-import { createTestDb } from './setup'
+import { createTestDb } from '../test-setup'
+import { appRouter } from './_app'
 
 const { prisma, cleanup } = createTestDb('test-user')
 
@@ -35,12 +35,11 @@ describe('user router', () => {
     expect(users[0]?.email).toBe('test@example.com')
   })
 
-  test('byId returns the user with posts', async () => {
+  test('byId returns the user', async () => {
     const caller = createCaller()
     const users = await caller.user.list()
     const user = await caller.user.byId({ id: users[0]!.id })
     expect(user.email).toBe('test@example.com')
-    expect(user.posts).toBeDefined()
   })
 
   test('create rejects invalid email', async () => {

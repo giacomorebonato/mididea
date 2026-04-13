@@ -1,6 +1,6 @@
 import * as Tone from 'tone'
+import type { SynthTrack } from '../types'
 import { getPresetById } from './synth-presets'
-import type { SynthTrack } from './types'
 
 export class SynthEngine {
   private synths = new Map<string, Tone.PolySynth>()

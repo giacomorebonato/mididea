@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test'
 describe('env', () => {
   test('provides defaults in development', async () => {
     // env.ts reads process.env at import time, so we test the module behavior
-    const { env } = await import('../env')
+    const { env } = await import('./env')
     expect(env.DATABASE_URL).toBe('file:./dev.db')
     expect(env.PORT).toBe(3000)
     expect(env.isProd).toBe(false)
