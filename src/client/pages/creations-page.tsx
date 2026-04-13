@@ -6,8 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { InvitationBanner } from '../components/invitation-banner'
 import { authClient } from '../auth'
+import { InvitationBanner } from '../components/invitation-banner'
 import { trpc } from '../trpc'
 
 export function CreationsPage() {
