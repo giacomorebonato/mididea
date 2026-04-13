@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { InvitationBanner } from '../components/invitation-banner'
 import { authClient } from '../auth'
 import { trpc } from '../trpc'
 
@@ -57,6 +58,7 @@ export function CreationsPage() {
     return (
       <div className="space-y-6">
         <h1 className="text-2xl sm:text-3xl font-bold">Creations</h1>
+        <InvitationBanner />
         <p className="text-muted-foreground">Loading...</p>
       </div>
     )
