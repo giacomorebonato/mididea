@@ -39,7 +39,7 @@ export function AuthInline({ onSuccess }: AuthInlineProps) {
     setError('')
     setLoading(true)
     try {
-      const result = await authClient.emailOtp.verifyEmail({ email, otp })
+      const result = await authClient.signIn.emailOtp({ email, otp })
       if (result.error) {
         setError(result.error.message ?? 'Invalid code')
         return

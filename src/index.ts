@@ -2,9 +2,30 @@ import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { serve } from 'bun'
 import { env } from './env'
 import index from './index.html'
-import { auth } from './server/auth'
+import { auth, getLastOtp } from './server/auth'
 import { createContext } from './server/context'
 import { appRouter } from './server/routers/_app'
+
+const testRoutes: Record<string, (req: Request) => Response> =
+  process.env.NODE_ENV === 'test'
+    ? {
+        '/api/test/last-otp': (req: Request) => {
+          const url = new URL(req.url)
+          const email = url.searchParams.get('email')
+          if (!email) {
+            return Response.json(
+              { error: 'email query param required' },
+              { status: 400 },
+            )
+          }
+          const otp = getLastOtp(email)
+          if (!otp) {
+            return Response.json({ error: 'no otp found' }, { status: 404 })
+          }
+          return Response.json({ otp })
+        },
+      }
+    : {}
 
 const server = serve({
   port: env.PORT,
@@ -21,6 +42,8 @@ const server = serve({
         router: appRouter,
         createContext: () => createContext({ req }),
       }),
+
+    ...testRoutes,
 
     '/*': index,
   },

@@ -19,5 +19,9 @@ export const env = {
   BETTER_AUTH_URL: isProd
     ? required('BETTER_AUTH_URL')
     : (process.env.BETTER_AUTH_URL ?? 'http://localhost:3000'),
+  RESEND_API_KEY: isProd
+    ? required('RESEND_API_KEY')
+    : (process.env.RESEND_API_KEY ?? ''),
+  RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL ?? 'noreply@mididea.com',
   isProd,
 } as const

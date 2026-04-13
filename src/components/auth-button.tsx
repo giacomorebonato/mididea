@@ -66,7 +66,7 @@ export function AuthButton({ onSuccess }: AuthButtonProps) {
     setFlowState('verifying')
 
     try {
-      const result = await authClient.emailOtp.verifyEmail({
+      const result = await authClient.signIn.emailOtp({
         email,
         otp,
       })

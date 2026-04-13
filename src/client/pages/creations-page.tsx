@@ -67,6 +67,7 @@ export function CreationsPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl sm:text-3xl font-bold">Creations</h1>
+      <InvitationBanner />
 
       {compositions.length === 0 ? (
         <Card>
