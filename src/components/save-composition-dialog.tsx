@@ -5,6 +5,7 @@ import { trpc } from '@/client/trpc'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { AuthInline } from './auth-inline'
 
 const TRANSIENT_KEYS = ['isPlaying', 'currentStep', 'activeXyPad'] as const
 
@@ -22,6 +23,7 @@ interface SaveCompositionDialogProps {
 
 export function SaveCompositionDialog({ state }: SaveCompositionDialogProps) {
   const [open, setOpen] = useState(false)
+  const [needsAuth, setNeedsAuth] = useState(false)
   const [title, setTitle] = useState('')
   const [error, setError] = useState('')
 
@@ -46,15 +48,40 @@ export function SaveCompositionDialog({ state }: SaveCompositionDialogProps) {
     },
   })
 
-  if (!userId) return null
-
   const count = myCompositions?.length ?? 0
 
   return (
     <>
-      <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
-        Save ({count}/5)
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={() => {
+          if (!userId) {
+            setNeedsAuth(true)
+          } else {
+            setOpen(true)
+          }
+        }}
+      >
+        Save{userId ? ` (${count}/5)` : ''}
       </Button>
+
+      {needsAuth && !userId && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          onClick={(e) => e.target === e.currentTarget && setNeedsAuth(false)}
+        >
+          <div className="bg-card border rounded-xl p-6 w-full max-w-sm space-y-4">
+            <h2 className="text-lg font-semibold">Sign in to save</h2>
+            <AuthInline
+              onSuccess={() => {
+                setNeedsAuth(false)
+                setOpen(true)
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {open && (
         <div
