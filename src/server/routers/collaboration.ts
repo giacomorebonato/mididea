@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto'
+
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import {
@@ -12,7 +14,6 @@ import {
 import { protectedProcedure, publicProcedure, router } from '../trpc'
 
 export const collaborationRouter = router({
-  /** Invite a user by email to collaborate on a composition */
   invite: protectedProcedure
     .input(
       z.object({
@@ -63,14 +64,150 @@ export const collaborationRouter = router({
         })
       }
 
-      return ctx.prisma.collaborator.create({
+      const pending = await ctx.prisma.invitation.findFirst({
+        where: {
+          compositionId: input.compositionId,
+          inviteeEmail: input.email,
+          status: 'pending',
+        },
+      })
+
+      if (pending) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'A pending invitation already exists for this user.',
+        })
+      }
+
+      const token = randomBytes(32).toString('hex')
+
+      return ctx.prisma.invitation.create({
         data: {
           compositionId: input.compositionId,
-          userId: user.id,
+          inviterId: ctx.session.user.id,
+          inviteeEmail: input.email,
+          token,
+          status: 'pending',
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         },
+      })
+    }),
+
+  acceptInvitation: protectedProcedure
+    .input(z.object({ token: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const invitation = await ctx.prisma.invitation.findUnique({
+        where: { token: input.token },
+      })
+
+      if (!invitation || invitation.status !== 'pending') {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Invitation not found or already processed.',
+        })
+      }
+
+      if (invitation.expiresAt < new Date()) {
+        await ctx.prisma.invitation.update({
+          where: { id: invitation.id },
+          data: { status: 'expired' },
+        })
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invitation has expired.',
+        })
+      }
+
+      if (invitation.inviteeEmail !== ctx.session.user.email) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'This invitation is not for you.',
+        })
+      }
+
+      await ctx.prisma.$transaction([
+        ctx.prisma.collaborator.create({
+          data: {
+            compositionId: invitation.compositionId,
+            userId: ctx.session.user.id,
+          },
+        }),
+        ctx.prisma.invitation.update({
+          where: { id: invitation.id },
+          data: { status: 'accepted' },
+        }),
+      ])
+
+      return { ok: true, compositionId: invitation.compositionId }
+    }),
+
+  declineInvitation: protectedProcedure
+    .input(z.object({ token: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const invitation = await ctx.prisma.invitation.findUnique({
+        where: { token: input.token },
+      })
+
+      if (!invitation || invitation.status !== 'pending') {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Invitation not found or already processed.',
+        })
+      }
+
+      if (invitation.inviteeEmail !== ctx.session.user.email) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'This invitation is not for you.',
+        })
+      }
+
+      await ctx.prisma.invitation.update({
+        where: { id: invitation.id },
+        data: { status: 'declined' },
+      })
+
+      return { ok: true }
+    }),
+
+  pendingInvitations: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.invitation.findMany({
+      where: {
+        inviteeEmail: ctx.session.user.email,
+        status: 'pending',
+        expiresAt: { gt: new Date() },
+      },
+      include: {
+        composition: {
+          select: { id: true, title: true },
+        },
+        inviter: {
+          select: { id: true, name: true },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+  }),
+
+  sentInvitations: protectedProcedure
+    .input(z.object({ compositionId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const composition = await ctx.prisma.composition.findUnique({
+        where: { id: input.compositionId },
+      })
+
+      if (!composition || composition.authorId !== ctx.session.user.id) {
+        throw new TRPCError({ code: 'NOT_FOUND' })
+      }
+
+      return ctx.prisma.invitation.findMany({
+        where: { compositionId: input.compositionId },
         include: {
-          user: { select: { id: true, name: true, email: true, image: true } },
+          inviter: {
+            select: { id: true, name: true, email: true },
+          },
         },
+        orderBy: { createdAt: 'desc' },
       })
     }),
 
