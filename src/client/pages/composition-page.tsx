@@ -75,6 +75,37 @@ export function CompositionPage() {
     }
   }, [composition, rawDispatch])
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const inviteToken = params.get('invite')
+    const declineToken = params.get('decline')
+    if (!inviteToken && !declineToken) return
+
+    const handleToken = async () => {
+      if (inviteToken) {
+        try {
+          await fetch('/api/trpc/collaboration.acceptInvitation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ json: { token: inviteToken } }),
+          })
+        } catch {}
+        window.history.replaceState({}, '', window.location.pathname)
+        window.location.reload()
+      } else if (declineToken) {
+        try {
+          await fetch('/api/trpc/collaboration.declineInvitation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ json: { token: declineToken } }),
+          })
+        } catch {}
+        window.location.href = '/creations'
+      }
+    }
+    handleToken()
+  }, [])
+
   // Audio engine setup
   useEffect(() => {
     const engine = new AudioEngine()
